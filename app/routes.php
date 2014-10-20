@@ -13,5 +13,22 @@
 
 Route::get('/', function()
 {
-	return View::make('hello');
-});
+	//return View::make('hello');
+	/*$user = new User;
+	$user->username = 'newuser';
+	$user->password = Hash::make('kjgkla');
+	$user->save();*/
+
+	/*User::create([
+		'username' => 'newuser',
+		'password' => Hash::make('jaglkaj')
+		]);*/
+
+	return User::all();
+}); 
+
+Route::resource('users','UsersController');
+
+Route::resource('sessions','SessionsController');
+Route::get('login', 'SessionsController@create');
+Route::get('logout', 'SessionsController@destroy');
