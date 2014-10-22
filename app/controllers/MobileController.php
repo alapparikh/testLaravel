@@ -17,7 +17,7 @@ class MobileController extends \BaseController {
 		//$contents = array['bloo','blaa'];
 		$value = "json";
 
-		$response = Response::make($contents, $statusCode);
+		//$response = Response::make($contents, $statusCode);
 
 		$response->header('Content-Type', $value);
 
