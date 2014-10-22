@@ -19,11 +19,11 @@ Route::get('/', function()
 	$user->password = Hash::make('kjgkla');
 	$user->save();*/
 
-	User::create([
+	/*User::create([
 		'username' => 'alap',
 		'email' => 'alap@',
 		'password' => Hash::make('alap')
-		]);
+		]);*/
 
 	return User::all();
 }); 
@@ -37,3 +37,5 @@ Route::get('logout', 'SessionsController@destroy');
 Route::get('admin', function(){
 	return 'Admin Page';
 })->before('auth');
+
+Route::get('mobcreate','MobileController@store');

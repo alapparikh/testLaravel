@@ -12,9 +12,21 @@
 		</div>
 
 		<div>
-			{{ Form::label('password', 'Password ') }}
+			{{ Form::label('email', 'Email: ') }}
+			{{ Form::email('email') }}
+			{{ $errors->first('email') }}
+		</div>
+
+		<div>
+			{{ Form::label('password', 'Password: ') }}
 			{{ Form::password('password') }}
 			{{ $errors->first('password') }}
+		</div>
+
+		<div>
+			{{ Form::label('confirmPassword', 'Confirm Password: ') }}
+			{{ Form::password('confirmPassword') }}
+			{{ $errors->first('confirmPassword') }}
 		</div>
 
 		<div>

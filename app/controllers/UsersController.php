@@ -61,6 +61,7 @@ class UsersController extends \BaseController {
 
 		User::create([
 			'username' => Input::get('username'),
+			'email' => Input::get('email'),
 			'password' => Hash::make(Input::get('password'))
 			]);
 

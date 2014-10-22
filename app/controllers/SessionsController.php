@@ -32,9 +32,12 @@ class SessionsController extends \BaseController {
 	 */
 	public function store()
 	{
+		$value = Request::header('Content-Type');
+
 		if (Auth::attempt(['username'=>Input::get('username'),'password'=>Input::get('password')] ))
 		{
-			return Auth::user();
+			//return Auth::user();
+			return $value;
 		}
 		return Redirect::back()->withInput();
 	}
@@ -82,7 +85,7 @@ class SessionsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy()
 	{
 		Auth::logout();
 
