@@ -38,4 +38,4 @@ Route::get('admin', function(){
 	return 'Admin Page';
 })->before('auth');
 
-Route::get('mobcreate','MobileController@store');
+Route::post('mobcreate','MobileController@store');
