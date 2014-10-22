@@ -21,6 +21,6 @@ class MobileController extends \BaseController {
 
 		$response->header('Content-Type', $value);
 
-		return $response;
+		return Response::json(['status'=>'OK']);
 	}
 }
