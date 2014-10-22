@@ -13,13 +13,13 @@ class MobileController extends \BaseController {
 			]);
 
 
-		$statusCode = 200;
+		//$statusCode = 200;
 		//$contents = array['bloo','blaa'];
-		$value = "json";
+		//$value = "json";
 
 		//$response = Response::make($contents, $statusCode);
 
-		$response->header('Content-Type', $value);
+		//$response->header('Content-Type', $value);
 
 		return Response::json(['status'=>'OK']);
 	}
