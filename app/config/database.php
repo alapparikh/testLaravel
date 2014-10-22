@@ -55,9 +55,9 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'local_foodjournal',
+			'database'  => 'foodjournal',
 			'username'  => 'root',
-			'password'  => '',
+			'password'  => 'scholes18bass',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',

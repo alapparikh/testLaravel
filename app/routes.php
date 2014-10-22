@@ -19,10 +19,11 @@ Route::get('/', function()
 	$user->password = Hash::make('kjgkla');
 	$user->save();*/
 
-	/*User::create([
-		'username' => 'newuser',
-		'password' => Hash::make('jaglkaj')
-		]);*/
+	User::create([
+		'username' => 'alap',
+		'email' => 'alap@',
+		'password' => Hash::make('alap')
+		]);
 
 	return User::all();
 }); 
@@ -32,3 +33,7 @@ Route::resource('users','UsersController');
 Route::resource('sessions','SessionsController');
 Route::get('login', 'SessionsController@create');
 Route::get('logout', 'SessionsController@destroy');
+
+Route::get('admin', function(){
+	return 'Admin Page';
+})->before('auth');

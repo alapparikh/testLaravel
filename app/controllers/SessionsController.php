@@ -20,6 +20,7 @@ class SessionsController extends \BaseController {
 	 */
 	public function create()
 	{
+		if (Auth::check()) return Redirect::to('/admin');
 		return View::make('sessions.create');
 	}
 
@@ -35,7 +36,7 @@ class SessionsController extends \BaseController {
 		{
 			return Auth::user();
 		}
-		return 'Failed';
+		return Redirect::back()->withInput();
 	}
 
 
@@ -83,7 +84,9 @@ class SessionsController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		Auth::logout();
+
+		return Redirect::to('sessions.create');
 	}
 
 
