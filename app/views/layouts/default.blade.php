@@ -14,7 +14,13 @@
 
 		<div id="nav">
 			<div class="navbar navbar-inverse">
-				<a class="navbar-brand">SimuFood</a>
+				<a  href="{{ URL::to('/admin') }}" class="navbar-brand">SimuFood</a>
+				@if(Auth::check())
+				<button type="button" class="btn btn-default navbar-btn"><a href="{{ URL::to('/logout') }}">Logout</a></button>
+				@else
+				<button type="button" class="btn btn-default navbar-btn"><a href="{{ URL::to('/login') }}">Login</a></button>
+				<button type="button" class="btn btn-default navbar-btn"><a href="{{ URL::to('/users/create') }}">Sign Up</a></button>
+				@endif
 			</div>
 		</div>
 

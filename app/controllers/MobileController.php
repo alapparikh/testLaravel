@@ -12,15 +12,16 @@ class MobileController extends \BaseController {
 			'password' => Hash::make(Input::get('password'))
 			]);
 
+		return Response::json(['status'=>'OK','token'=>'xxxxxxxxxx']);
+	}
 
-		//$statusCode = 200;
-		//$contents = array['bloo','blaa'];
-		//$value = "json";
+	public function attemptlogin(){
 
-		//$response = Response::make($contents, $statusCode);
-
-		//$response->header('Content-Type', $value);
-
-		return Response::json(['status'=>'OK']);
+		if (Auth::attempt(['username'=>Input::get('username'),'password'=>Input::get('password')] ))
+		{
+			//return Auth::user();
+			return Response::json(['status'=>'success','token'=>'xxxxxxxxxx']);
+		}
+		return Response::json(['status'=>'failed']);
 	}
 }

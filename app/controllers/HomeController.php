@@ -15,9 +15,10 @@ class HomeController extends BaseController {
 	|
 	*/
 
-	public function showWelcome()
+	public function handleHome()
 	{
-		return View::make('hello');
+		if (Auth::check()) return View::make('admin.admin');
+		return View::make('admin.landing');
 	}
 
 }

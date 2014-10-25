@@ -1,6 +1,6 @@
 <?php
 
-class SessionsController extends \BaseController {
+class PhotosController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
@@ -20,8 +20,7 @@ class SessionsController extends \BaseController {
 	 */
 	public function create()
 	{
-		if (Auth::check()) return View::make('admin.admin');
-		return View::make('sessions.create');
+		return View::make('photos.create');
 	}
 
 
@@ -32,14 +31,18 @@ class SessionsController extends \BaseController {
 	 */
 	public function store()
 	{
-		//$value = Request::header('Content-Type');
+		/*$file = Input::file('someFile');
+		$path = storage_path(); //path('public').'uploads';
+		$upload = Input::upload('someFile', $path, $file['name']);*/
 
-		if (Auth::attempt(['username'=>Input::get('username'),'password'=>Input::get('password')] ))
-		{
-			//return Auth::user();
-			return View::make('admin.admin');
-		}
-		return Redirect::back()->withInput();
+		$file = Input::file('file');
+
+		$s3 = AWS::get('s3');
+		$s3->putObject(array(
+		    'Bucket'     => 'bssteam17foodjournalingdevelopment',
+		    'Key'        => $file->getFileName(),
+		    'SourceFile' => $file->getRealPath(), //'/the/path/to/the/file/you/are/uploading.ext',
+		));
 	}
 
 
@@ -51,7 +54,11 @@ class SessionsController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
+		$s3 = AWS::get('s3');
+		$s3->getObject(array(
+			'Bucker' => '',
+			'Key' => '',
+		));
 	}
 
 
@@ -85,11 +92,9 @@ class SessionsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy()
+	public function destroy($id)
 	{
-		Auth::logout();
-
-		return Redirect::to('login');
+		//
 	}
 
 

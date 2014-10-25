@@ -11,21 +11,9 @@
 |
 */
 
-Route::get('/', function()
-{
-	//return View::make('hello');
-	/*$user = new User;
-	$user->username = 'newuser';
-	$user->password = Hash::make('kjgkla');
-	$user->save();*/
-
-	/*User::create([
-		'username' => 'alap',
-		'email' => 'alap@',
-		'password' => Hash::make('alap')
-		]);*/
-
-	return User::all();
+Route::get('/', function(){
+	if (Auth::check()) return Redirect::to('/admin');
+	return View::make('admin.landing');
 }); 
 
 Route::resource('users','UsersController');
@@ -34,8 +22,8 @@ Route::resource('sessions','SessionsController');
 Route::get('login', 'SessionsController@create');
 Route::get('logout', 'SessionsController@destroy');
 
-Route::get('admin', function(){
-	return 'Admin Page';
-})->before('auth');
+Route::get('admin', 'HomeController@handleHome');
 
 Route::post('mobcreate','MobileController@store');
+
+Route::resource('photos','PhotosController');
