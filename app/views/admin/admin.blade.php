@@ -8,6 +8,6 @@
 
 @section('content')
 
-	
+	<li>{{ link_to_route("users.edit", "Edit your information") }}</li>
 
 @stop

@@ -17,6 +17,7 @@ Route::get('/', function(){
 }); 
 
 Route::resource('users','UsersController');
+Route::get('profile', 'UsersController@show');
 
 Route::resource('sessions','SessionsController');
 Route::get('login', 'SessionsController@create');

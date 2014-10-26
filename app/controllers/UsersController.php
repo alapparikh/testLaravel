@@ -75,12 +75,14 @@ class UsersController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($username)
+	public function show()
 	{
 		//
 		$user = $this->user->whereUsername($username)->first();
 
 		return View::make('users.show', ['user' => $user]);
+
+		//$id = Auth::id();
 	}
 
 
@@ -92,7 +94,11 @@ class UsersController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		//
+		$id = Auth::id();
+		$user = $this->user->whereId($id)->first();
+
+		return View::make('users.edit', ['user' => $user]);
+		//return $user->id;
 	}
 
 

@@ -1,7 +1,11 @@
 @extends('layouts.default')
 
+@section('pagetitle')
+	<h1>Profile</h1>
+@stop
+
 @section('content')
 
-	<h1>Hello, {{ $user->username }}</h1>
+	<h1>Hello, </h1>
 
 @stop

@@ -14,9 +14,9 @@
 			{{ Form::open(['route' => 'sessions.store']) }}
 
 				<div>
-					{{ Form::label('username', 'Username') }} <br>
-					{{ Form::text('username') }}
-					{{ $errors->first('username') }}
+					{{ Form::label('email', 'Email') }} <br>
+					{{ Form::email('email') }}
+					{{ $errors->first('email') }}
 				</div>
 
 				<br>

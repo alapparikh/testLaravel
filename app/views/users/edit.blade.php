@@ -1,15 +1,14 @@
 @extends('layouts.default')
 
 @section('pagetitle')
-	<center>
-		<h1>Create New User</h1>
-	</center>
+	<h1>Edit Information</h1>
 @stop
 
 @section('content')
-	
-	<center>
-		{{ Form::open(['route' => 'users.store']) }}
+
+	<p>Hello, {{ $user->username }}</p>
+
+	{{ Form::open(['route' => 'users.update']) }}
 
 			<div>
 				{{ Form::label('username', 'Username') }} <br>
@@ -28,7 +27,7 @@
 			<br>
 
 			<div>
-				{{ Form::label('password', 'Password') }} <br>
+				{{ Form::label('password', 'Old Password') }} <br>
 				{{ Form::password('password') }}
 				{{ $errors->first('password') }}
 			</div>
@@ -36,11 +35,18 @@
 			<br>
 
 			<div>
-				{{ Form::submit('Register', ["class"=>"btn btn-primary"]) }}
+				{{ Form::label('newPassword', 'New Password') }} <br>
+				{{ Form::password('newPassword') }}
+				{{ $errors->first('newPassword') }}
+			</div>
+
+
+			<br>
+
+			<div>
+				{{ Form::submit('Update', ["class"=>"btn btn-primary"]) }}
 			</div>
 
 		{{ Form::close() }}
-
-	</center>	
 
 @stop

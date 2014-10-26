@@ -30,8 +30,8 @@ return array(
     | http://docs.aws.amazon.com/aws-sdk-php-2/guide/latest/configuration.html
     |
     */
-    'key'    => 'AKIAIQUF26G4NNARFV5A', // Your AWS Access Key ID
-    'secret' => '18W/VP0TmyYCTijFXy0wivUeEFCpRCNkU1aPfsbH', // Your AWS Secret Access Key
+    'key'    => '', // Your AWS Access Key ID
+    'secret' => '', // Your AWS Secret Access Key
 
     /*
     |--------------------------------------------------------------------------
