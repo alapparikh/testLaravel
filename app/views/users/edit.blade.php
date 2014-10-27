@@ -8,7 +8,7 @@
 
 	<p>Hello, {{ $user->username }}</p>
 
-	{{ Form::open(['route' => 'users.update']) }}
+	{{ Form::model($user, array('route' => array('users.update',$user->id), 'method' => 'put')) }}
 
 			<div>
 				{{ Form::label('username', 'Username') }} <br>
@@ -27,7 +27,7 @@
 			<br>
 
 			<div>
-				{{ Form::label('password', 'Old Password') }} <br>
+				{{ Form::label('password', 'Current Password') }} <br>
 				{{ Form::password('password') }}
 				{{ $errors->first('password') }}
 			</div>

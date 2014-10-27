@@ -11,10 +11,7 @@
 |
 */
 
-Route::get('/', function(){
-	if (Auth::check()) return Redirect::to('/admin');
-	return View::make('admin.landing');
-}); 
+Route::get('/', 'HomeController@handleHome'); 
 
 Route::resource('users','UsersController');
 Route::get('profile', 'UsersController@show');

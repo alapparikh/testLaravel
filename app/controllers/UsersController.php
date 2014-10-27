@@ -17,9 +17,11 @@ class UsersController extends \BaseController {
 	public function index()
 	{
 		//
-		$users = $this->user->all();
+		//$users = $this->user->all();
 
-		return View::make('users.index')->withUsers($users);
+		//return View::make('users.index')->withUsers($users);
+
+		return Redirect::route('admin');
 	}
 
 
@@ -65,7 +67,7 @@ class UsersController extends \BaseController {
 			'password' => Hash::make(Input::get('password'))
 			]);
 
-		return Redirect::route('users.index');
+		return Redirect::to('admin');
 	}
 
 
@@ -75,7 +77,7 @@ class UsersController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show()
+	public function show($username)
 	{
 		//
 		$user = $this->user->whereUsername($username)->first();
@@ -110,7 +112,20 @@ class UsersController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+
+		$user = User::find($id);
+		//$inputpassword = Hash::make(Input::get('password'));
+
+		//return $user->password;
+		if (Hash::check(Input::get('password'), $user->password)) {
+			$user->username = Input::get('username');
+			$user->email = Input::get('email');
+			$user->password = Hash::make(Input::get('newPassword'));
+			$user->save();
+
+			return Redirect::to('admin');
+		}
+		return Redirect::back()->withInput();
 	}
 
 
