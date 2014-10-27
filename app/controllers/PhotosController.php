@@ -56,7 +56,7 @@ class PhotosController extends \BaseController {
 	{
 		$s3 = AWS::get('s3');
 		$s3->getObject(array(
-			'Bucker' => '',
+			'Bucket' => '',
 			'Key' => '',
 		));
 	}
