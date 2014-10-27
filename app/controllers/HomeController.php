@@ -25,7 +25,8 @@ class HomeController extends BaseController {
 		if (Auth::attempt(['email'=>Input::get('email'),'password'=>Input::get('password')] ))
 		{
 			$id = Auth::id();
-			$results = DB::select('select * from users where id = ?', array($id));
+			//$results = DB::select('select * from users where id = ?', array($id));
+			$results = User::find($id);
 			//$bum = DB::table('users')->where('id', $id);
 			//$photos = DB::table('photos')->where('user_id', $id);
 			Auth::logout();
