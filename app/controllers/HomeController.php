@@ -25,10 +25,11 @@ class HomeController extends BaseController {
 		if (Auth::attempt(['email'=>Input::get('email'),'password'=>Input::get('password')] ))
 		{
 			$id = Auth::id();
-			$bum = DB::table('users')->where('id', $id);
+			$results = DB::select('select * from users where id = ?', $id;
+			//$bum = DB::table('users')->where('id', $id);
 			//$photos = DB::table('photos')->where('user_id', $id);
 			Auth::logout();
-			return Response::json($bum);
+			return Response::json($results);
 		}
 		return Response::json(['status'=>'failed']);
 	}
