@@ -27,5 +27,6 @@ Route::get('admin', 'HomeController@handleHome');
 Route::get('dataexport', 'HomeController@dataExport');
 
 Route::post('mobcreate','MobileController@store');
+Route::post('moblogin','MobileController@attemptlogin');
 
 Route::resource('photos','PhotosController');

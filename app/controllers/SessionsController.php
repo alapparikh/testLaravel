@@ -34,7 +34,7 @@ class SessionsController extends \BaseController {
 	{
 		//$value = Request::header('Content-Type');
 
-		if (Auth::attempt(['username'=>Input::get('username'),'password'=>Input::get('password')] ))
+		if (Auth::attempt(['email'=>Input::get('email'),'password'=>Input::get('password')], true ))
 		{
 			//return Auth::user();
 			return View::make('admin.admin');
