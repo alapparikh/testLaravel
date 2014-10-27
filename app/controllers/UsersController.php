@@ -123,7 +123,7 @@ class UsersController extends \BaseController {
 			$user->password = Hash::make(Input::get('newPassword'));
 			$user->save();
 
-			return Redirect::to('admin');
+			return Redirect::to('admin')->with('flash', 'Details saved');
 		}
 		return Redirect::back()->withInput();
 	}
