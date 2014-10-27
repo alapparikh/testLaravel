@@ -37,12 +37,26 @@ class PhotosController extends \BaseController {
 
 		$file = Input::file('file');
 
-		$s3 = AWS::get('s3');
-		$s3->putObject(array(
+		try {
+			$s3 = AWS::get('s3');
+			$s3->putObject(array(
 		    'Bucket'     => 'bssteam17foodjournalingdevelopment',
 		    'Key'        => $file->getFileName(),
 		    'SourceFile' => $file->getRealPath(), //'/the/path/to/the/file/you/are/uploading.ext',
-		));
+			));
+
+			//return Response::json(['status' => 'Photo successfully uploaded']);
+		} catch (Exception $e) {
+			return Response::json(['status' => 'Failed to upload photo. Please try again.']);
+		}
+
+		Photo::create([
+			'key' => $file->getFileName(),
+			'user_id' => 1, //Implement this after implementing tokens,
+			'description' => Input::get('description')
+			]);
+		
+		return Response::json(['status' => 'Photo successfully uploaded']);
 	}
 
 

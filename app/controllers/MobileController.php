@@ -19,7 +19,7 @@ class MobileController extends \BaseController {
 
 		if (Auth::attempt(['email'=>Input::get('email'),'password'=>Input::get('password')] ))
 		{
-			//return Auth::user();
+			// Generate token and set it in alternate database. Don't use Eloquent
 			return Response::json(['status'=>'success','token'=>'xxxxxxxxxx']);
 		}
 		return Response::json(['status'=>'failed']);
