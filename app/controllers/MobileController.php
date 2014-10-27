@@ -17,7 +17,7 @@ class MobileController extends \BaseController {
 
 	public function attemptlogin(){
 
-		if (Auth::attempt(['username'=>Input::get('username'),'password'=>Input::get('password')] ))
+		if (Auth::attempt(['email'=>Input::get('email'),'password'=>Input::get('password')] ))
 		{
 			//return Auth::user();
 			return Response::json(['status'=>'success','token'=>'xxxxxxxxxx']);
