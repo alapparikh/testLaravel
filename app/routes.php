@@ -24,6 +24,7 @@ Route::get('login', 'SessionsController@create');
 Route::get('logout', 'SessionsController@destroy');
 
 Route::get('admin', 'HomeController@handleHome');
+Route::get('dataexport', 'HomeController@dataExport');
 
 Route::post('mobcreate','MobileController@store');
 
