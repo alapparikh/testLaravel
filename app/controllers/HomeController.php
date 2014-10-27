@@ -22,7 +22,7 @@ class HomeController extends BaseController {
 	}
 
 	public function dataExport() {
-		if (Auth::attempt(['username'=>Input::get('username'),'password'=>Input::get('password')] ))
+		if (Auth::attempt(['email'=>Input::get('email'),'password'=>Input::get('password')] ))
 		{
 			$id = Auth::id();
 			$user = $this->user->whereId($id)->first();
