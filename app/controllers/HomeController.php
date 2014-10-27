@@ -28,7 +28,7 @@ class HomeController extends BaseController {
 			$bum = DB::table('users')->where('id', $id);
 			//$photos = DB::table('photos')->where('user_id', $id);
 			Auth::logout();
-			return $bum;
+			return Response::json($bum);
 		}
 		return Response::json(['status'=>'failed']);
 	}
