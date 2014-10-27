@@ -30,7 +30,7 @@ return array(
     | http://docs.aws.amazon.com/aws-sdk-php-2/guide/latest/configuration.html
     |
     */
-    'key'    => '', // Your AWS Access Key ID
+    'key'    => 'boom', // Your AWS Access Key ID
     'secret' => '', // Your AWS Secret Access Key
 
     /*
