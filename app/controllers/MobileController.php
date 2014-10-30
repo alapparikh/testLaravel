@@ -48,8 +48,8 @@ class MobileController extends \BaseController {
 	public function getphotos(){
 		try{
 			$id = DB::table('mobiletokens')->select('user_id')->where('token','=',Input::get('token'))->get();
-			
-			$links = DB::table('photos')->select('link','description','latitude','longitude','created_at')->where('user_id','=',$id)->orderBy('created_at','desc')->get();
+
+			$links = DB::table('photos')->select('link'/*,'description','latitude','longitude','created_at'*/)->where('user_id','=',$id)->orderBy('created_at','desc')->get();
 		} catch (Exception $e){
 			return Response::json(['status' => 'failed']);
 		}
