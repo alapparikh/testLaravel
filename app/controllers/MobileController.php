@@ -25,7 +25,7 @@ class MobileController extends \BaseController {
 		{
 			// Generate token and set it in alternate database. Don't use Eloquent
 			$token = Hash::make(Input::get('email').time());
-			
+			DB::delete('delete from mobiletokens where user_id = ?', array(Auth::id()));
 			DB::insert('insert into mobiletokens (user_id, token) values (?, ?)', array(Auth::id(), $token));
 
 			Auth::logout();
@@ -49,10 +49,9 @@ class MobileController extends \BaseController {
 		try{
 			$id = DB::table('mobiletokens')->select('user_id')->where('token','=',Input::get('token'))->get();
 			$links = DB::table('photos')->select('link','description','latitude','longitude','created_at')->where('user_id','=',$id)->orderBy('created_at','desc')->get();
-			return $links;
 		} catch (Exception $e){
 			return Response::json(['status' => 'failed']);
 		}
-		
+		return $links;
 	}
 }

@@ -53,7 +53,7 @@ class HomeController extends BaseController {
 			$id = Auth::id();
 			
 			$result = User::find($id);
-			$photokeys = DB::table('photos')->where('user_id', $id)->pluck('key');
+			//$photokeys = DB::table('photos')->where('user_id', $id)->pluck('key');
 			$photokeys = DB::table('photos')->select('key')->where('user_id','=',$id)->get();
 
 			//INCOMPLETE FUNCTION
@@ -86,7 +86,7 @@ class HomeController extends BaseController {
 		    // Download .zip file.
             $success = File::deleteDirectory($directory, true);
 		    return Response::download(public_path() . '/' . $zipFileName, $zipFileName, $headers);
-		    
+
 	        } else {
 	            return 'failed';
 	        }		
