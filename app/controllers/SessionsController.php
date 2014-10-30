@@ -20,7 +20,7 @@ class SessionsController extends \BaseController {
 	 */
 	public function create()
 	{
-		if (Auth::check()) return View::make('admin.admin');
+		if (Auth::check()) return Redirect::to('admin');
 		return View::make('sessions.create');
 	}
 
@@ -36,8 +36,9 @@ class SessionsController extends \BaseController {
 
 		if (Auth::attempt(['email'=>Input::get('email'),'password'=>Input::get('password')], true ))
 		{
-			//return Auth::user();
-			return View::make('admin.admin');
+			
+			//return $links[$keys[1]]->link;
+			return Redirect::to('admin');
 		}
 		return Redirect::back()->withInput();
 	}

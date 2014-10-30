@@ -7,7 +7,7 @@ use Illuminate\Auth\Reminders\RemindableInterface;
 
 class Photo extends Eloquent  {
 
-	protected $fillable = ['user_id', 'key','description'];
+	protected $fillable = ['user_id', 'key','description','link'];
 
 	/**
 		 * The database table used by the model.

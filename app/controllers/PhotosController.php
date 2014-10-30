@@ -20,10 +20,48 @@ class PhotosController extends \BaseController {
 	 */
 	public function create()
 	{
-		return View::make('photos.create');
+		if (Auth::check()) return View::make('photos.create');
+		return Redirect::to('login');
 	}
 
+	public function webstore()
+	{
+		$file = Input::file('file');
+		$key = $file->getFileName().'_'.Carbon::now();
+		$s3 = AWS::get('s3');
+		$bucket = 'bssteam17foodjournalingdevelopment';
 
+		if (
+			$s3->putObject(array(
+		    'Bucket'     => $bucket,
+		    'Key'        => $key,
+		    'SourceFile' => $file->getRealPath(), //'/the/path/to/the/file/you/are/uploading.ext',
+			))) {
+
+			$plainUrl = $s3->getObjectUrl($bucket, $key);
+			//return Response::json(['status' => 'Photo successfully uploaded']);
+		} else {
+			return Response::json(['status' => 'Failed to upload photo. Please try again.']);
+		}
+
+		$user_id = Auth::id();
+
+		try{
+			Photo::create([
+			'key' => $key,
+			'user_id' => $user_id, //Implement this after implementing tokens,
+			'description' => 'testingagain',
+			'link' => $plainUrl
+			]);
+		}
+		catch (Exception $e){
+			return Response::json(['status' => 'Failed to upload photo']);
+		}
+		
+		
+		return Response::json(['status' => 'Photo successfully uploaded']);
+	}
+	
 	/**
 	 * Store a newly created resource in storage.
 	 *
@@ -36,27 +74,40 @@ class PhotosController extends \BaseController {
 		$upload = Input::upload('someFile', $path, $file['name']);*/
 
 		$file = Input::file('file');
-
-		try {
-			$s3 = AWS::get('s3');
+		$key = $file->getFileName().'_'.Carbon::now();
+		$bucket = 'bssteam17foodjournalingdevelopment';
+		$s3 = AWS::get('s3');
+		
+		if (
 			$s3->putObject(array(
-		    'Bucket'     => 'bssteam17foodjournalingdevelopment',
-		    'Key'        => $file->getFileName(),
+		    'Bucket'     => $bucket,
+		    'Key'        => $key,
 		    'SourceFile' => $file->getRealPath(), //'/the/path/to/the/file/you/are/uploading.ext',
-			));
+			))) {
 
+			$plainUrl = $s3->getObjectUrl($bucket, $key);
 			//return Response::json(['status' => 'Photo successfully uploaded']);
-		} catch (Exception $e) {
-			return Response::json(['status' => 'Failed to upload photo. Please try again.']);
+		} else {
+			return Response::json(['status' => 'failed']);
 		}
 
-		Photo::create([
-			'key' => $file->getFileName(),
-			'user_id' => 1, //Implement this after implementing tokens,
-			'description' => Input::get('description')
+		$user_id = DB::table('mobiletokens')->where('token', Input::get('token'))->pluck('user_id');
+
+		try{
+			Photo::create([
+			'key' => $key,
+			'user_id' => $user_id, //Implement this after implementing tokens,
+			'description' => Input::get('description'),
+			'link' => $plainUrl,
+			'latitude' => Input::get('latitude'),
+			'longitude' => Input::get('longitude')
 			]);
+		}
+		catch (Exception $e){
+			return Response::json(['status' => 'failed']);
+		}
 		
-		return Response::json(['status' => 'Photo successfully uploaded']);
+		return Response::json(['status' => 'success','link' => $plainUrl]);
 	}
 
 

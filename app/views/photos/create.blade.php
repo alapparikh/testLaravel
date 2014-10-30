@@ -10,7 +10,7 @@
 
 <center>
 
-	{{Form::open(['route' => 'photos.store','files'=>'true'])}}
+	{{Form::open(['route' => 'photos.webstore','files'=>'true'])}}
 	    {{ Form::label('file','File',array('id'=>'','class'=>'')) }}
   		{{ Form::file('file','',array('id'=>'','class'=>'')) }}
 	    {{Form::submit('Upload!')}}

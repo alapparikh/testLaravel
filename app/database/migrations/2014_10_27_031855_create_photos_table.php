@@ -18,6 +18,9 @@ class CreatePhotosTable extends Migration {
 			$table->integer('user_id');
 			$table->string('key')->unique();
 			$table->string('description');
+			$table->string('link')->unique();
+			$table->string('latitude');
+			$table->string('longitude');
 			$table->timestamps();
 		});
 	}

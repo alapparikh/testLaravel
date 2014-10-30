@@ -33,6 +33,12 @@
 					{{ Form::submit('Login', ["class"=>"btn btn-primary"]) }}
 				</div>
 
+				<br>
+				
+				<div>
+					{{ link_to_route("password.remind", "Forgot your password again?") }}
+				</div>
+
 			{{ Form::close() }}
 
 	

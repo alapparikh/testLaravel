@@ -6,13 +6,17 @@ class MobileController extends \BaseController {
 
 		//$input = Input::all();
 
-		User::create([
+		try { User::create([
 			'username' => Input::get('username'),
 			'email' => Input::get('email'),
 			'password' => Hash::make(Input::get('password'))
 			]);
+		} catch (Exception $e){
+			return Response::json(['status'=>'failed','token'=>'']);
+		}
+		$token = Hash::make(Input::get('email').time());
 
-		return Response::json(['status'=>'OK','token'=>'xxxxxxxxxx']);
+		return Response::json(['status'=>'success','token'=>$token]);
 	}
 
 	public function attemptlogin(){
@@ -20,8 +24,35 @@ class MobileController extends \BaseController {
 		if (Auth::attempt(['email'=>Input::get('email'),'password'=>Input::get('password')] ))
 		{
 			// Generate token and set it in alternate database. Don't use Eloquent
-			return Response::json(['status'=>'success','token'=>'xxxxxxxxxx']);
+			$token = Hash::make(Input::get('email').time());
+			
+			DB::insert('insert into mobiletokens (user_id, token) values (?, ?)', array(Auth::id(), $token));
+
+			Auth::logout();
+
+			return Response::json(['status'=>'success','token'=>$token]);
 		}
-		return Response::json(['status'=>'failed']);
+		return Response::json(['status'=>'failed','token'=>'']);
+	}
+
+	public function logout() {
+		try {
+			DB::delete('delete from mobiletokens where token = ?', array(Input::get('token')));
+
+		} catch (Exception $e){
+			return Response::json(['status' => 'failed']);
+		}
+		return Response::json(['status'=>'success']);
+	}
+
+	public function getphotos(){
+		try{
+			$id = DB::table('mobiletokens')->select('user_id')->where('token','=',Input::get('token'))->get();
+			$links = DB::table('photos')->select('link','description','latitude','longitude','created_at')->where('user_id','=',$id)->orderBy('created_at','desc')->get();
+			return $links;
+		} catch (Exception $e){
+			return Response::json(['status' => 'failed']);
+		}
+		
 	}
 }

@@ -10,43 +10,43 @@
 
 	{{ Form::model($user, array('route' => array('users.update',$user->id), 'method' => 'put')) }}
 
-			<div>
-				{{ Form::label('username', 'Username') }} <br>
-				{{ Form::text('username') }}
-				{{ $errors->first('username') }}
-			</div>
+		<div>
+			{{ Form::label('username', 'Username') }} <br>
+			{{ Form::text('username') }}
+			{{ $errors->first('username') }}
+		</div>
 
-			<br>
+		<br>
 
-			<div>
-				{{ Form::label('email', 'Email') }} <br>
-				{{ Form::email('email') }}
-				{{ $errors->first('email') }}
-			</div>
+		<div>
+			{{ Form::label('email', 'Email') }} <br>
+			{{ Form::email('email') }}
+			{{ $errors->first('email') }}
+		</div>
 
-			<br>
+		<br>
 
-			<div>
-				{{ Form::label('password', 'Current Password') }} <br>
-				{{ Form::password('password') }}
-				{{ $errors->first('password') }}
-			</div>
+		<div>
+			{{ Form::label('password', 'Current Password') }} <br>
+			{{ Form::password('password') }}
+			{{ $errors->first('password') }}
+		</div>
 
-			<br>
+		<br>
 
-			<div>
-				{{ Form::label('newPassword', 'New Password') }} <br>
-				{{ Form::password('newPassword') }}
-				{{ $errors->first('newPassword') }}
-			</div>
+		<div>
+			{{ Form::label('newPassword', 'New Password') }} <br>
+			{{ Form::password('newPassword') }}
+			{{ $errors->first('newPassword') }}
+		</div>
 
 
-			<br>
+		<br>
 
-			<div>
-				{{ Form::submit('Update', ["class"=>"btn btn-primary"]) }}
-			</div>
+		<div>
+			{{ Form::submit('Update', ["class"=>"btn btn-primary"]) }}
+		</div>
 
-		{{ Form::close() }}
+	{{ Form::close() }}
 
 @stop

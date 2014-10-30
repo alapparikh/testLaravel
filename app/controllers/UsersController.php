@@ -67,7 +67,7 @@ class UsersController extends \BaseController {
 			'password' => Hash::make(Input::get('password'))
 			]);
 
-		return Redirect::to('admin');
+		return Redirect::to('login')->with('message', 'Get ready to meet your stomach. Please login');
 	}
 
 
@@ -112,9 +112,13 @@ class UsersController extends \BaseController {
 	 */
 	public function update($id)
 	{
-
+		$input = Input::all();
 		$user = User::find($id);
 		//$inputpassword = Hash::make(Input::get('password'));
+
+		if (! User::isUpdateValid($input)){
+			return Redirect::back()->withInput()->withErrors(User::$errors);
+		}
 
 		//return $user->password;
 		if (Hash::check(Input::get('password'), $user->password)) {
@@ -123,7 +127,7 @@ class UsersController extends \BaseController {
 			$user->password = Hash::make(Input::get('newPassword'));
 			$user->save();
 
-			return Redirect::to('admin')->with('flash', 'Details saved');
+			return Redirect::to('admin')->with('message', 'Details saved');
 		}
 		return Redirect::back()->withInput();
 	}
