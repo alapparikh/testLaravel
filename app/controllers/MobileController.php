@@ -49,10 +49,10 @@ class MobileController extends \BaseController {
 		try{
 			$id = DB::table('mobiletokens')->select('user_id')->where('token','=',Input::get('token'))->get();
 			//$id = DB::select('select user_id from mobiletokens where token = ?', array(Input::get('token')));
-			//$links = DB::table('photos')->select('link'/*,'description','latitude','longitude','created_at'*/)->where('user_id','=',$id)->get();
+			$links = DB::table('photos')->select('link'/*,'description','latitude','longitude','created_at'*/)->where('user_id','=',$id)->get();
 		} catch (Exception $e){
 			return Response::json(['status' => 'failed']);
 		}
-		return $id;
+		return $links;
 	}
 }
