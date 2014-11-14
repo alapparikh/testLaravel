@@ -88,7 +88,7 @@ class PhotosController extends \BaseController {
 			$plainUrl = $s3->getObjectUrl($bucket, $key);
 			//return Response::json(['status' => 'Photo successfully uploaded']);
 		} else {
-			return Response::json(['status' => 'failed']);
+			return Response::json(['status' => 'S3 failed']);
 		}
 
 		$user_id = DB::table('mobiletokens')->where('token', Input::get('token'))->pluck('user_id');
@@ -104,7 +104,7 @@ class PhotosController extends \BaseController {
 			]);
 		}
 		catch (Exception $e){
-			return Response::json(['status' => 'failed']);
+			return Response::json(['status' => 'photo database failed']);
 		}
 		
 		return Response::json(['status' => 'success','link' => $plainUrl]);
