@@ -47,13 +47,13 @@ class MobileController extends \BaseController {
 
 	public function getphotos(){
 		try{
-			$id = json_decode(DB::table('mobiletokens')->select('user_id')->where('token','=',Input::get('token'))->get());
+			$user_id = DB::table('mobiletokens')->where('token', Input::get('token'))->pluck('user_id');
 			//$id = DB::select('select user_id from mobiletokens where token = ?', array(Input::get('token')));
 			//$links = DB::table('photos')->select('link'/*,'description','latitude','longitude','created_at'*/)->where('user_id','=',$id)->get();
-			//$links = DB::table('photos')->select('link')->where('user_id','=',$id->user_id)->orderBy('created_at','desc')->get();
+			//$links = DB::table('photos')->select('link')->where('user_id','=',$id['user_id'])->orderBy('created_at','desc')->get();
 		} catch (Exception $e){
 			return Response::json(['status' => 'failed']);
 		}
-		return $id->user_id;
+		return $user_id;
 	}
 }
