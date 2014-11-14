@@ -54,6 +54,6 @@ class MobileController extends \BaseController {
 		} catch (Exception $e){
 			return Response::json(['status' => 'failed']);
 		}
-		return $user_id;
+		return $links;
 	}
 }
