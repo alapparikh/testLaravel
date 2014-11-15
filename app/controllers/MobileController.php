@@ -4,7 +4,11 @@ class MobileController extends \BaseController {
 
 	public function store(){
 
-		//$input = Input::all();
+		$input = Input::all();
+
+		if (! User::isValid($input)){
+			return Response::json(['status'=>'failed','token'=>'']);
+		}
 
 		try { User::create([
 			'username' => Input::get('username'),
@@ -54,6 +58,6 @@ class MobileController extends \BaseController {
 		} catch (Exception $e){
 			return Response::json(['status' => 'failed']);
 		}
-		return $links;
+		return Response::json(['status' => 'success', 'links' => $links]);
 	}
 }
