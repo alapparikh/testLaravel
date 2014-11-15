@@ -7,7 +7,7 @@ class MobileController extends \BaseController {
 		$input = Input::all();
 
 		if (! User::isValid($input)){
-			return Response::json(['status'=>'failed','token'=>'']);
+			return Response::json(['status'=>'failed','errors'=>User::$errors]);
 		}
 
 		try { User::create([
