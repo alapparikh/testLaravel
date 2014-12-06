@@ -103,7 +103,7 @@ class MobileController extends \BaseController {
 		$items = $result_arr->hits;//->fields->nf_calories;
 
 		foreach ($items as $item) {
-			$calories = $item->nf_calories;
+			$calories = $item->fields->nf_calories;
 		}
 
 		return $calories;
