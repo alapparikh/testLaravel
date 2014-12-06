@@ -63,12 +63,18 @@ class MobileController extends \BaseController {
 
 	public function getstatus(){
 
+		// Get corresponding User ID for token
+		$user_id = DB::table('mobiletokens')->where('token', Input::get('token'))->pluck('user_id');
+
+		// Get meal name of most recently uploaded photo
+
+
 		// set HTTP header
 		$headers = array(
 		    'Content-Type: application/json',
 		);
 
-		$mealname = 'taco?';
+		$mealname = 'taco';
 
 		// query string
 		$fields = array(
@@ -77,7 +83,7 @@ class MobileController extends \BaseController {
 		    'appId' => '65a327b9',
 		    'appKey' => '7506bb427b7a5c989c48d64d68c27421',
 		);
-		$url = 'https://api.nutritionix.com/v1_1/search/' . $mealname . http_build_query($fields);
+		$url = 'https://api.nutritionix.com/v1_1/search/' . $mealname . '?' . http_build_query($fields);
 		//$url = 'https://api.nutritionix.com/v1_1/search/taco?results=0%3A2&fields=nf_calories%2Cnf_sugars&appId=65a327b9&appKey=7506bb427b7a5c989c48d64d68c27421'
 
 		// Open connection
@@ -88,7 +94,6 @@ class MobileController extends \BaseController {
 		curl_setopt($ch, CURLOPT_POST, false);
 		//curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true );
-
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
 		// Execute request
@@ -100,13 +105,21 @@ class MobileController extends \BaseController {
 		// get the result and parse to JSON
 		$result_arr = json_decode($result);
 
-		$items = $result_arr->hits;//->fields->nf_calories;
+		/*$items = $result_arr->hits;
 
+		// Get calories, cholesterol, fat, and serving size from Nutritionix API response
 		foreach ($items as $item) {
 			$calories = $item->fields->nf_calories;
+			$cholesterol = $item->fields->nf_cholesterol;
+			$fat = $item->fields->nf_total_fat;
+			$serving_size = $item->fields->nf_serving_weight_grams;
 		}
 
-		return $calories;
+		if ($serving_size == null) {
+			return Response::json(['status' => 'failed', 'reason' => 'Serving size not found']);
+		}*/
+
+		return $result_arr;
 	}
 
 }

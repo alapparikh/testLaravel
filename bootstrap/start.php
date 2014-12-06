@@ -26,7 +26,7 @@ $app = new Illuminate\Foundation\Application;
 
 $env = $app->detectEnvironment(array(
 
-	'local' => array('dhcp-ccc-3490.redrover.cornell.edu','Alaps-MacBook-Pro.local'),
+	'local' => array('dhcp-ccc-3490.redrover.cornell.edu','Alaps-MacBook-Pro.local','alaps-mbp.home'),
 
 ));
 
