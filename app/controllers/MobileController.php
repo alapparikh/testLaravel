@@ -105,7 +105,7 @@ class MobileController extends \BaseController {
 		// get the result and parse to JSON
 		$result_arr = json_decode($result);
 
-		/*$items = $result_arr->hits;
+		$items = $result_arr->hits;
 
 		// Get calories, cholesterol, fat, and serving size from Nutritionix API response
 		foreach ($items as $item) {
@@ -115,11 +115,24 @@ class MobileController extends \BaseController {
 			$serving_size = $item->fields->nf_serving_weight_grams;
 		}
 
-		if ($serving_size == null) {
+		// Insufficient data to calculate meal score
+		if ($serving_size == null || $calories == null || $cholesterol == null || $fat == null) {
 			return Response::json(['status' => 'failed', 'reason' => 'Serving size not found']);
-		}*/
+		}
 
-		return Response::json(['status' => 'success', 'result' => $result_arr]);
+		// Normalize calories, cholesterol and fat for given meal
+		$calories = $calories/$serving_size;
+		$cholesterol = $cholesterol/$serving_size;
+		$fat = $fat/$serving_size;
+
+		// Scale calories, cholesterol and fat between 0.5 and 3.5 for a uniform score across all meals
+		$scaled_calories = 0.5 + (($calories - 0.17)*3)/2.86;
+		$scaled_fat = 0.5 + (($fat - 0.003)*3)/0.177;
+		$scaled_cholesterol = 0.5 + ($cholesterol*3);
+
+		$score = 0.2*$scaled_calories + 0.4*$scaled_fat + 0.4*$scaled_cholesterol; 
+
+		return Response::json(['status' => 'success', 'score' => $score]);
 	}
 
 }
