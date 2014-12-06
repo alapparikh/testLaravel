@@ -36,9 +36,6 @@ class MobileController extends \BaseController {
 
 			return Response::json(['status'=>'success','token'=>$token]);
 		}
-		else {
-			if 
-		}
 		return Response::json(['status'=>'failed','token'=>'']);
 	}
 
