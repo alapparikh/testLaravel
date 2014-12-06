@@ -64,7 +64,7 @@ class MobileController extends \BaseController {
 	public function getstatus(){
 
 		// set HTTP header
-		/*$headers = array(
+		$headers = array(
 		    'Content-Type: application/json',
 		);
 
@@ -96,7 +96,7 @@ class MobileController extends \BaseController {
 		curl_close($ch);
 
 		// get the result and parse to JSON
-		$result_arr = json_decode($result, true);*/
+		$result_arr = json_decode($result, true);
 
 		return Response::json(['result' => 'Your house has a nice view']);
 	}
