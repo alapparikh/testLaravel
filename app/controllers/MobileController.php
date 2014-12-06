@@ -98,9 +98,9 @@ class MobileController extends \BaseController {
 		curl_close($ch);
 
 		// get the result and parse to JSON
-		$result_arr = json_decode($result, true);
+		$result_arr = json_decode($result);
 
-		$calories = $result_arr['result'];//->fields->nf_calories;
+		$calories = $result_arr->result;//->fields->nf_calories;
 
 		return Response::json(['result' => $calories]);
 	}
