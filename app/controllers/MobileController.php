@@ -77,8 +77,8 @@ class MobileController extends \BaseController {
 		    'appId' => '65a327b9',
 		    'appKey' => '7506bb427b7a5c989c48d64d68c27421',
 		);
-		//$url = 'https://api.nutritionix.com/v1_1/search/' . $mealname . http_build_query($fields);
-		$url = 'https://api.nutritionix.com/v1_1/search/taco?results=0%3A1&fields=nf_calories&appId=65a327b9&appKey=7506bb427b7a5c989c48d64d68c27421';
+		$url = 'https://api.nutritionix.com/v1_1/search/' . $mealname . http_build_query($fields);
+		//$url = 'https://api.nutritionix.com/v1_1/search/taco?results=0%3A1&fields=nf_calories&appId=65a327b9&appKey=7506bb427b7a5c989c48d64d68c27421';
 
 		// Open connection
 		$ch = curl_init();
