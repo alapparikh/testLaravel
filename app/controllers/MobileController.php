@@ -16,7 +16,7 @@ class MobileController extends \BaseController {
 			'password' => Hash::make(Input::get('password'))
 			]);
 		} catch (Exception $e){
-			return Response::json(['status'=>'failed','token'=>'']);
+			return Response::json(['status'=>'failed','errors'=>json(['database'=>'failed to create user'])]);
 		}
 		$token = Hash::make(Input::get('email').time());
 
@@ -35,6 +35,9 @@ class MobileController extends \BaseController {
 			Auth::logout();
 
 			return Response::json(['status'=>'success','token'=>$token]);
+		}
+		else {
+			if 
 		}
 		return Response::json(['status'=>'failed','token'=>'']);
 	}
@@ -60,4 +63,45 @@ class MobileController extends \BaseController {
 		}
 		return Response::json(['status' => 'success', 'links' => $links]);
 	}
+
+	public function getstatus(){
+
+		// set HTTP header
+		$headers = array(
+		    'Content-Type: application/json',
+		);
+
+		// query string
+		$fields = array(
+		    'phrase' => 'taco',
+		    'results' => '0:1',
+		    'fields' => '*',
+		    'appId' => '65a327b9',
+		    'appKey' => '7506bb427b7a5c989c48d64d68c27421',
+		);
+		$url = 'https://api.nutritionix.com/v1_1/search/' . http_build_query($fields);
+
+		// Open connection
+		$ch = curl_init();
+
+		// Set the url, number of GET vars, GET data
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, false);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true );
+
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+		// Execute request
+		$result = curl_exec($ch);
+
+		// Close connection
+		curl_close($ch);
+
+		// get the result and parse to JSON
+		$result_arr = json_decode($result, true);
+
+		return Response::json(['result' => $result_arr]);
+	}
+
 }

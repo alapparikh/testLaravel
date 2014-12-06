@@ -54,3 +54,6 @@ Route::post('photos/webstore', array(
   'uses' => 'PhotosController@webstore',
   'as' => 'photos.webstore'
 ));
+
+//TEST NUTRITIONIX API REQUEST
+Route::get('getstatus','MobileController@getstatus');

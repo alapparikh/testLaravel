@@ -36,6 +36,12 @@
 			<br>
 
 			<div>
+				{{ Form::label('confirmPassword', 'Confirm Password') }} <br>
+				{{ Form::password('confirmPassword') }}
+				{{ $errors->first('confirmPassword') }}
+			</div>
+
+			<div>
 				{{ Form::submit('Register', ["class"=>"btn btn-primary"]) }}
 			</div>
 
