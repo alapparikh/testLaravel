@@ -68,15 +68,16 @@ class MobileController extends \BaseController {
 		    'Content-Type: application/json',
 		);
 
+		$mealname = 'tacos?';
+
 		// query string
 		$fields = array(
-		    'phrase' => 'taco',
 		    'results' => '0:1',
 		    'fields' => '*',
 		    'appId' => '65a327b9',
 		    'appKey' => '7506bb427b7a5c989c48d64d68c27421',
 		);
-		$url = 'https://api.nutritionix.com/v1_1/search/' . http_build_query($fields);
+		$url = 'https://api.nutritionix.com/v1_1/search/' . $mealname . http_build_query($fields);
 
 		// Open connection
 		$ch = curl_init();
