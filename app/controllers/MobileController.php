@@ -79,7 +79,7 @@ class MobileController extends \BaseController {
 		// query string
 		$fields = array(
 		    'results' => '0:1',
-		    'fields' => 'nf_calories',
+		    'fields' => 'nf_calories,nf_cholesterol,nf_total_fat',
 		    'appId' => '65a327b9',
 		    'appKey' => '7506bb427b7a5c989c48d64d68c27421',
 		);
