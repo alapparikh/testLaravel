@@ -98,7 +98,7 @@ class MobileController extends \BaseController {
 		// get the result and parse to JSON
 		$result_arr = json_decode($result, true);
 
-		return Response::json(['result' => 'Your house has a nice view']);
+		return Response::json(['result' => $result_arr]);
 	}
 
 }
