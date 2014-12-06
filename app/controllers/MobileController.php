@@ -119,7 +119,7 @@ class MobileController extends \BaseController {
 			return Response::json(['status' => 'failed', 'reason' => 'Serving size not found']);
 		}*/
 
-		return return Response::json(['status' => 'success', 'result' => $result_arr]);
+		return Response::json(['status' => 'success', 'result' => $result_arr]);
 	}
 
 }
