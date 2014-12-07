@@ -72,7 +72,7 @@ class MobileController extends \BaseController {
 
 		// Get meal name of most recently uploaded photo
 		//$mealname = DB::table('photos')->where('user_id','=',$user_id)->orderBy('created_at','desc')->pluck('description');
-		$mealname = 'fried chicken';
+		$mealname = 'salad';
 		// Get data from Nutritionix API
 		$result = $this->query_api($mealname);
 
@@ -151,7 +151,7 @@ class MobileController extends \BaseController {
 
 		// Execute request
 		$result = curl_exec($ch);
-		return $result;
+
 		// Close connection
 		curl_close($ch);
 
