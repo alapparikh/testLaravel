@@ -58,3 +58,4 @@ Route::post('photos/webstore', array(
 //TEST NUTRITIONIX API REQUEST
 Route::get('getstatus','MobileController@getstatus');
 //Route::get('getscores','MobileController@update_score_table');
+Route::get('getphotorecommendations','UsersController@recommendations');
