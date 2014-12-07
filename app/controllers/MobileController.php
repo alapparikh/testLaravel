@@ -74,7 +74,7 @@ class MobileController extends \BaseController {
 		    'Content-Type: application/json',
 		);
 
-		$mealname = 'taco';
+		$mealname = 'salad';
 
 		// query string
 		$fields = array(
