@@ -150,7 +150,7 @@ class UsersController extends \BaseController {
 		$user_id = 7;
 
 		//$current_status = DB::table('meal_scores')->where('user_id', $user_id->pluck('current_status');
-		$user_photo_info = DB::table('photos')->select('link','description','latitude','longitude')->where('user_id',$user_id)->orderBy('created_at','desc')->linit(1)->get();
+		$user_photo_info = DB::table('photos')->select('link','description','latitude','longitude')->where('user_id',$user_id)->orderBy('created_at','desc')->limit(1)->get();
 		return Response::json(['status' => 'success', 'recoinfo' => $user_photo_info]);
 		
 		// TODO: check if latitude and longitude are actually called latitude and longitude in the table	
