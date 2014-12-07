@@ -78,7 +78,7 @@ class MobileController extends \BaseController {
 
 		// Get the result and parse to JSON
 		$result_arr = json_decode($result);
-
+		return Response::json(['status' => 'success', 'links' => $result_arr]);
 		$items = $result_arr->hits;
 
 		// Get calories, cholesterol, fat, and serving size from Nutritionix API response
