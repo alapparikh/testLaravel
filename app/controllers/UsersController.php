@@ -168,7 +168,8 @@ class UsersController extends \BaseController {
 
 			// Check if distance between user's photo and recommendation is less than 100 miles
 			if ($this->distance($user_photo_latitude,$user_photo_longitude,$reco_latitude,$reco_longitude) < 100) {
-				$recommendations[] = $reco;
+				//$recommendations[] = $reco;
+				array_push($recommendations,$reco);
 				if (sizeof($recommendations) == 10) {
 					break;
 				}
