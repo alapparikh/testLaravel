@@ -70,7 +70,7 @@ class MobileController extends \BaseController {
 		//$user_id = DB::table('mobiletokens')->where('token', Input::get('token'))->pluck('user_id');
 		$user_id = 7;
 		// Get meal name of most recently uploaded photo
-		$mealname = DB::table('photos')->where('user_id','=',$user_id)->orderBy('created_at','asc')->pluck('description');
+		$mealname = DB::table('photos')->where('user_id','=',$user_id)->orderBy('created_at','desc')->pluck('description');
 		return Response::json(['status' => 'success', 'description' => $mealname]);
 		// set HTTP header
 		$headers = array(
