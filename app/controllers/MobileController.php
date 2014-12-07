@@ -116,8 +116,8 @@ class MobileController extends \BaseController {
 		}
 
 		// Insufficient data to calculate meal score
-		if ($calories == null || $cholesterol == null || $fat == null) {
-			return Response::json(['status' => 'failed', 'reason' => 'Serving size not found', 'calories'=>$calories, 'cholesterol'=>$cholesterol, 'fat'=>$fat, 'serving weight'=>$serving_size]);
+		if ($serving_size == null && $calories == null && $cholesterol == null && $fat == null) {
+			return Response::json(['status' => 'failed', 'reason' => 'Value not found', 'calories'=>$calories, 'cholesterol'=>$cholesterol, 'fat'=>$fat, 'serving weight'=>$serving_size]);
 		}
 
 		// Normalize calories, cholesterol and fat for given meal
