@@ -97,7 +97,9 @@ class MobileController extends \BaseController {
 
 		// Insufficient data to calculate meal score
 		if ($serving_size == null) {
-			return Response::json(['status' => 'failed', 'reason' => 'Serving size not defined']);
+			$score = 0.0;
+			$status = $this->update_score_table($score,$user_id);
+			return Response::json(['status' => 'failed', 'userstatus' => $status]);
 		}
 
 		// Get score based on calories, cholesterol, fat, and serving size
