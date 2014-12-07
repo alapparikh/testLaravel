@@ -160,7 +160,7 @@ class UsersController extends \BaseController {
 		
 		//$reco_info_arr = json_decode($reco_info);
 		//$reco_info_arr = shuffle($reco_info_arr);
-		$recommendations[];
+		$recommendations = array();
 		foreach ($reco_info as $reco){
 			$reco_latitude = floatval($reco->latitude);
 			$reco_longitude = floatval($reco->longitude);
