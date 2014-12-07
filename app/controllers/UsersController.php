@@ -153,17 +153,36 @@ class UsersController extends \BaseController {
 		$user_photo_info = DB::table('photos')->select('link','description','latitude','longitude')->where('user_id',$user_id)->orderBy('created_at','desc')->limit(1)->get();
 		$user_photo_latitude = $user_photo_info[0]->latitude;
 		$user_photo_longitude = $user_photo_info[0]->longitude;
-		return Response::json(['status' => 'success', 'recoinfo' => $user_photo_longitude]);
-		// TODO: check if latitude and longitude are actually called latitude and longitude in the table	
+		//return Response::json(['status' => 'success', 'recoinfo' => $user_photo_longitude]);
+
+		// 	
 		$reco_info = DB::table('photos')->select('link','description','latitude','longitude')->whereNotIn('user_id',array($user_id))/*->where('meal_score','<',$current_status - 0.1)*/->get();
 		$reco_info = shuffle($reco_info);
 		foreach ($reco_info as $reco){
-			$reco_latitude = $reco->latitude;
-			$reco_longitude = $reco->longitude;
+			$reco_latitude = floatval($reco->latitude);
+			$reco_longitude = floatval($reco->longitude);
+
+			// Check if distance between user's photo and recommendation is less than 100 miles
+			if ($this->distance($user_photo_latitude,$user_photo_longitude,$reco_latitude,$reco_longitude) < 100) {
+				$recommendations[] = $reco;
+				if (sizeof($recommendations) == 10) {
+					break;
+				}
+			}
 		}
-		return Response::json(['status' => 'success', 'recoinfo' => $reco_info]);
-		//$numbers = shuffle($numbers);
+		return Response::json(['status' => 'success', 'recoinfo' => $recommendations]);
 	}
 
+	function distance($lat1, $lon1, $lat2, $lon2) {
+
+		$theta = $lon1 - $lon2;
+		$dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+		$dist = acos($dist);
+		$dist = rad2deg($dist);
+		$miles = $dist * 60 * 1.1515;
+		
+		return $miles;
+		  
+	}
 
 }
