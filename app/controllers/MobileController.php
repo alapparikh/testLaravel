@@ -157,13 +157,15 @@ class MobileController extends \BaseController {
 		return $result;
 	}
 
+	/*
+
+	*/
 	public function update_score_table () {
 		$score = 1.0;
 		if ($score > 0) {
 			$scores = DB::table('meal_scores')->select('meal_1','meal_2','meal_3','meal_4','meal_5')->where('user_id',50)->get();
 			$scores = array_values($scores);
 			$mealscores = array($scores[0]->meal_1,$scores[0]->meal_2,$scores[0]->meal_3,$scores[0]->meal_4,$scores[0]->meal_5);
-			//$meal_1 = $scores[0]->meal_1;
 			$count = 0;
 			$sum = 0.0;
 			foreach ($mealscores as $mealscore){
@@ -175,11 +177,16 @@ class MobileController extends \BaseController {
 			$sum = $sum + $score;
 			$status = $sum/($count + 1);
 			$status = round($status);
+
+			$mealscores = array_values($mealscores);
+			DB::table('meal_scores')
+            ->where('user_id', 50)
+            ->update(array('meal_1' => $score,'meal_2' => $mealscores[0],'meal_3' => $mealscores[1],'meal_4' => $mealscores[2],'meal_5' => $mealscores[3]));
 		} else {
 			$status = DB::table('meal_scores')->where('user_id',$user_id)->pluck('current_status');
 		}
 		
-		return Response::json(['status' => 'success', 'status' => $status]);
+		return Response::json(['status' => 'success', 'userstatus' => $status]);
 	}
 
 }
