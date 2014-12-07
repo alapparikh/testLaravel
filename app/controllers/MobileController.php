@@ -49,6 +49,9 @@ class MobileController extends \BaseController {
 		return Response::json(['status'=>'success']);
 	}
 
+	/*
+	Returns links to all photos uploaded by given user
+	*/
 	public function getphotos(){
 		try{
 			$user_id = DB::table('mobiletokens')->where('token', Input::get('token'))->pluck('user_id');
@@ -65,10 +68,10 @@ class MobileController extends \BaseController {
 
 		// Get corresponding User ID for token
 		//$user_id = DB::table('mobiletokens')->where('token', Input::get('token'))->pluck('user_id');
-
+		$user_id = 7;
 		// Get meal name of most recently uploaded photo
-
-
+		$mealname = DB::table('photos')->where('user_id','=',$user_id)->orderBy('created_at','asc')->pluck('description');
+		return Response::json(['status' => 'success', 'description' => $mealname]);
 		// set HTTP header
 		$headers = array(
 		    'Content-Type: application/json',
@@ -120,6 +123,7 @@ class MobileController extends \BaseController {
 			return Response::json(['status' => 'failed', 'reason' => 'Serving size not defined']);
 		}
 
+		// Get score based on calories, cholesterol, fat, and serving size
 		$score = $this->calculate_score($calories,$cholesterol,$fat,$serving_size);
 
 		return Response::json(['status' => 'success', 'score' => $score]);
