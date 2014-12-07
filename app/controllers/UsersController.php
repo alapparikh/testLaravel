@@ -153,8 +153,8 @@ class UsersController extends \BaseController {
 
 		// TODO: check if latitude and longitude are actually called latitude and longitude in the table	
 		$reco_info = DB::table('photos')->select('link','description','latitude','longitude')->whereNotIn('user_id',$user_id)/*->where('meal_score','<',$current_status - 0.1)*/->get();
-		return $reco_info;
-		$numbers = shuffle($numbers);
+		return esponse::json(['status' => 'success', 'recoinfo' => $reco_info]);
+		//$numbers = shuffle($numbers);
 	}
 
 
