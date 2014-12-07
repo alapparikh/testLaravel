@@ -144,5 +144,18 @@ class UsersController extends \BaseController {
 		//
 	}
 
+	public function recommendations () {
+		// Get corresponding User ID for token
+		//$user_id = DB::table('mobiletokens')->where('token', Input::get('token'))->pluck('user_id');
+		$user_id = 50;
+
+		//$current_status = DB::table('meal_scores')->where('user_id', $user_id->pluck('current_status');
+
+		// TODO: check if latitude and longitude are actually called latitude and longitude in the table	
+		$reco_info = DB::table('photos')->select('link','description','latitude','longitude')->whereNotIn('user_id',$user_id)->/*where('meal_score','<',$current_status - 0.1)*/->get();
+
+		$numbers = shuffle($numbers);
+	}
+
 
 }

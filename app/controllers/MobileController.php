@@ -191,18 +191,18 @@ class MobileController extends \BaseController {
 			elseif ($status >= 3.5) {
 				$status = 3.499999;
 			}
-			$status = round($status);
 
 			// Update database table with new meal score value
 			$mealscores = array_values($mealscores);
 			DB::table('meal_scores')
             ->where('user_id', $user_id)
-            ->update(array('meal_1' => $score,'meal_2' => $mealscores[0],'meal_3' => $mealscores[1],'meal_4' => $mealscores[2],'meal_5' => $mealscores[3]));
+            ->update(array('meal_1' => $score,'meal_2' => $mealscores[0],'meal_3' => $mealscores[1],'meal_4' => $mealscores[2],'meal_5' => $mealscores[3],'current_status' => $status));
 		} 
 		else {
 			$status = DB::table('meal_scores')->where('user_id',$user_id)->pluck('current_status');
 		}
 		
+		$status = round($status);
 		return $status;
 	}
 

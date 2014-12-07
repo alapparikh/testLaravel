@@ -21,7 +21,7 @@ class CreateMealscoresTable extends Migration {
 			$table->float('meal_3')->default(0.0);
 			$table->float('meal_4')->default(0.0);
 			$table->float('meal_5')->default(0.0);
-			$table->integer('current_status')->default(1);
+			$table->float('current_status')->default(1.0);
 			$table->timestamps();
 		});
 	}
