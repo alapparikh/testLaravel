@@ -155,13 +155,18 @@ class UsersController extends \BaseController {
 		$user_photo_longitude = $user_photo_info[0]->longitude;
 		//return Response::json(['status' => 'success', 'recoinfo' => $user_photo_longitude]);
 
-		// 
-		$reco_info = DB::table('photos')->select('link','description','latitude','longitude')->whereNotIn('user_id',array($user_id))/*->whereBetween('meal_score',array(0.1,$current_status - 0.1))*/->get();
+		// Get recommendations which are healthier and not eaten by the user before
+		$reco_info = DB::table('photos')
+		->select('link','description','latitude','longitude')
+		->whereNotIn('user_id',array($user_id))
+		->whereNotIn('description',$user_photo_info[0]->description);
+		/*->whereBetween('meal_score',array(0.1,$current_status - 0.1))*/
+		->get();
 		
 		//$reco_info_arr = json_decode($reco_info);
-		//$reco_info_arr = shuffle($reco_info_arr);
+		$reco_info = shuffle($reco_info);
 		$recommendations = array();
-		$distances = array();
+		
 		foreach ($reco_info as $reco){
 			$reco_latitude = floatval($reco->latitude);
 			$reco_longitude = floatval($reco->longitude);
@@ -176,7 +181,7 @@ class UsersController extends \BaseController {
 				}
 			}
 		}
-		return Response::json(['status' => 'success', 'recoinfo' => $user_photo_info]);
+		return Response::json(['status' => 'success', 'recoinfo' => $recommendations]);
 	}
 
 	/*
