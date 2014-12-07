@@ -164,7 +164,7 @@ class UsersController extends \BaseController {
 		->get();
 		
 		//$reco_info_arr = json_decode($reco_info);
-		$reco_info = shuffle($reco_info);
+		shuffle($reco_info);
 		$recommendations = array();
 		
 		foreach ($reco_info as $reco){
