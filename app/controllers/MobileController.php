@@ -120,7 +120,7 @@ class MobileController extends \BaseController {
 			return Response::json(['status' => 'failed', 'reason' => 'Serving size not defined']);
 		}
 
-		$score = calculate_score($calories,$cholesterol,$fat,$serving_size);
+		$score = $this->calculate_score($calories,$cholesterol,$fat,$serving_size);
 
 		return Response::json(['status' => 'success', 'score' => $score]);
 	}
