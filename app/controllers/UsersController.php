@@ -159,7 +159,7 @@ class UsersController extends \BaseController {
 		$reco_info = DB::table('photos')
 		->select('link','description','latitude','longitude')
 		->whereNotIn('user_id',array($user_id))
-		->whereNotIn('description',$user_photo_info[0]->description);
+		->whereNotIn('description',$user_photo_info[0]->description)
 		/*->whereBetween('meal_score',array(0.1,$current_status - 0.1))*/
 		->get();
 		
