@@ -156,11 +156,11 @@ class UsersController extends \BaseController {
 		//return Response::json(['status' => 'success', 'recoinfo' => $user_photo_longitude]);
 
 		// 
-		$reco_info = DB::table('photos')->select('link','description','latitude','longitude')->whereNotIn('user_id',array($user_id))/*->where('meal_score','<',$current_status - 0.1)*/->get();
-		return Response::json(['status' => 'success', 'recoinfo' => $reco_info]);
-		$reco_info = json_decode((string)$reco_info);
-		$reco_info = shuffle($reco_info);
-		foreach ($reco_info as $reco){
+		$reco_info = DB::table('photos')->select('link','description','latitude','longitude')->whereNotIn('user_id',array($user_id))/*->whereBetween('meal_score',array(0.1,$current_status - 0.1))*/->get();
+		
+		$reco_info_arr = json_decode($reco_info);
+		$reco_info_arr = shuffle($reco_info_arr);
+		foreach ($reco_info_arr as $reco){
 			$reco_latitude = floatval($reco->latitude);
 			$reco_longitude = floatval($reco->longitude);
 
@@ -186,8 +186,7 @@ class UsersController extends \BaseController {
 		$dist = rad2deg($dist);
 		$miles = $dist * 60 * 1.1515;
 		
-		return $miles;
-		  
+		return $miles;	  
 	}
 
 }
