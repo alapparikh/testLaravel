@@ -147,7 +147,7 @@ class UsersController extends \BaseController {
 	public function recommendations () {
 		// Get corresponding User ID for token
 		//$user_id = DB::table('mobiletokens')->where('token', Input::get('token'))->pluck('user_id');
-		$user_id = 7;
+		$user_id = 3;
 
 		//$current_status = DB::table('meal_scores')->where('user_id', $user_id->pluck('current_status');
 		$user_photo_info = DB::table('photos')->select('link','description','latitude','longitude')->where('user_id',$user_id)->orderBy('created_at','desc')->limit(1)->get();
@@ -176,7 +176,7 @@ class UsersController extends \BaseController {
 				}
 			}
 		}
-		return Response::json(['status' => 'success', 'recoinfo' => $reco_info]);
+		return Response::json(['status' => 'success', 'recoinfo' => $recommendations]);
 	}
 
 	/*
