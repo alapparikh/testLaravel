@@ -163,7 +163,7 @@ class UsersController extends \BaseController {
 		/*->whereBetween('meal_score',array(0.1,$current_status - 0.1))*/
 		->get();
 		
-		//$reco_info_arr = json_decode($reco_info);
+		$reco_info_arr = json_decode($reco_info);
 		$reco_info = shuffle($reco_info);
 		$recommendations = array();
 		
