@@ -151,7 +151,7 @@ class MobileController extends \BaseController {
 
 		// Execute request
 		$result = curl_exec($ch);
-
+		return $result;
 		// Close connection
 		curl_close($ch);
 
