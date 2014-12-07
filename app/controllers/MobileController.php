@@ -74,7 +74,7 @@ class MobileController extends \BaseController {
 		    'Content-Type: application/json',
 		);
 
-		$mealname = 'salad';
+		$mealname = 'taco';
 
 		// query string
 		$fields = array(
@@ -116,9 +116,9 @@ class MobileController extends \BaseController {
 		}
 
 		// Insufficient data to calculate meal score
-		if ($cholesterol == null) {
+		//if ($cholesterol == null) {
 			return Response::json(['status' => 'failed', 'reason' => 'Value not found', 'calories'=>$calories, 'cholesterol'=>$cholesterol, 'fat'=>$fat, 'serving weight'=>$serving_size]);
-		}
+		//}
 
 		// Normalize calories, cholesterol and fat for given meal
 		$calories = $calories/$serving_size;
