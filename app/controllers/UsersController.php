@@ -176,7 +176,7 @@ class UsersController extends \BaseController {
 				}
 			}
 		}
-		return Response::json(['status' => 'success', 'recoinfo' => $recommendations]);
+		return Response::json(['status' => 'success', 'recoinfo' => $user_photo_info]);
 	}
 
 	/*
