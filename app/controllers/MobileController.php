@@ -69,15 +69,65 @@ class MobileController extends \BaseController {
 		// Get corresponding User ID for token
 		//$user_id = DB::table('mobiletokens')->where('token', Input::get('token'))->pluck('user_id');
 		$user_id = 7;
+
 		// Get meal name of most recently uploaded photo
-		$mealname = DB::table('photos')->where('user_id','=',$user_id)->orderBy('created_at','desc')->pluck('description');
-		return Response::json(['status' => 'success', 'description' => $mealname]);
+		//$mealname = DB::table('photos')->where('user_id','=',$user_id)->orderBy('created_at','desc')->pluck('description');
+		$mealname = 'fried chicken';
+		// Get data from Nutritionix API
+		$result = $this->query_api($mealname);
+
+		// Get the result and parse to JSON
+		$result_arr = json_decode($result);
+
+		$items = $result_arr->hits;
+
+		// Get calories, cholesterol, fat, and serving size from Nutritionix API response
+		foreach ($items as $item) {
+			$calories = $item->fields->nf_calories;
+			$cholesterol = $item->fields->nf_cholesterol;
+			$fat = $item->fields->nf_total_fat;
+			$serving_size = $item->fields->nf_serving_weight_grams;
+		}
+
+		// Insufficient data to calculate meal score
+		if ($serving_size == null) {
+			return Response::json(['status' => 'failed', 'reason' => 'Serving size not defined']);
+		}
+
+		// Get score based on calories, cholesterol, fat, and serving size
+		$score = $this->calculate_score($calories,$cholesterol,$fat,$serving_size);
+
+		return Response::json(['status' => 'success', 'score' => $score]);
+	}
+
+	/*
+	Returns score assuming salad to be the healthiest and fried chicken the unhealthiest foods to eat per gram
+	*/
+	public function calculate_score ($calories,$cholesterol,$fat,$serving_size){
+		// Normalize calories, cholesterol and fat for given meal
+		$calories = $calories/$serving_size;
+		$cholesterol = $cholesterol/$serving_size;
+		$fat = $fat/$serving_size;
+
+		// Scale calories, cholesterol and fat between 0.5 and 3.5 for a uniform score across all meals
+		$scaled_calories = 0.5 + (($calories - 0.17)*3)/2.86;
+		$scaled_fat = 0.5 + (($fat - 0.003)*3)/0.177;
+		$scaled_cholesterol = 0.5 + ($cholesterol*3);
+
+		$score = 0.2*$scaled_calories + 0.4*$scaled_fat + 0.4*$scaled_cholesterol; 
+		$score = round($score);
+
+		return $score;
+	}
+
+	/*
+	Returns result of API query to Nutrionix database with meal name/description as the search parameter
+	*/
+	public function query_api ($mealname){
 		// set HTTP header
 		$headers = array(
 		    'Content-Type: application/json',
 		);
-
-		$mealname = 'salad';
 
 		// query string
 		$fields = array(
@@ -105,44 +155,7 @@ class MobileController extends \BaseController {
 		// Close connection
 		curl_close($ch);
 
-		// get the result and parse to JSON
-		$result_arr = json_decode($result);
-
-		$items = $result_arr->hits;
-
-		// Get calories, cholesterol, fat, and serving size from Nutritionix API response
-		foreach ($items as $item) {
-			$calories = $item->fields->nf_calories;
-			$cholesterol = $item->fields->nf_cholesterol;
-			$fat = $item->fields->nf_total_fat;
-			$serving_size = $item->fields->nf_serving_weight_grams;
-		}
-
-		// Insufficient data to calculate meal score
-		if ($serving_size == null) {
-			return Response::json(['status' => 'failed', 'reason' => 'Serving size not defined']);
-		}
-
-		// Get score based on calories, cholesterol, fat, and serving size
-		$score = $this->calculate_score($calories,$cholesterol,$fat,$serving_size);
-
-		return Response::json(['status' => 'success', 'score' => $score]);
-	}
-
-	public function calculate_score ($calories,$cholesterol,$fat,$serving_size){
-		// Normalize calories, cholesterol and fat for given meal
-		$calories = $calories/$serving_size;
-		$cholesterol = $cholesterol/$serving_size;
-		$fat = $fat/$serving_size;
-
-		// Scale calories, cholesterol and fat between 0.5 and 3.5 for a uniform score across all meals
-		$scaled_calories = 0.5 + (($calories - 0.17)*3)/2.86;
-		$scaled_fat = 0.5 + (($fat - 0.003)*3)/0.177;
-		$scaled_cholesterol = 0.5 + ($cholesterol*3);
-
-		$score = 0.2*$scaled_calories + 0.4*$scaled_fat + 0.4*$scaled_cholesterol; 
-
-		return $score;
+		return $result;
 	}
 
 }
