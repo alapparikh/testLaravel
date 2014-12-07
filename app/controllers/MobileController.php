@@ -183,6 +183,12 @@ class MobileController extends \BaseController {
 			}
 			$sum = $sum + $score;
 			$status = $sum/($count + 1);
+			if ($status < 0.5) {
+				$status = 0.5;
+			}
+			elseif ($status >= 3.5) {
+				$status = 3.499999;
+			}
 			$status = round($status);
 
 			// Update database table with new meal score value
