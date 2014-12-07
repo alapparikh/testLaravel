@@ -157,7 +157,7 @@ class UsersController extends \BaseController {
 
 		// 	
 		$reco_info = DB::table('photos')->select('link','description','latitude','longitude')->whereNotIn('user_id',array($user_id))/*->where('meal_score','<',$current_status - 0.1)*/->get();
-		$reco_info = json_decode($recoinfo);
+		$reco_info = json_decode($reco_info);
 		$reco_info = shuffle($reco_info);
 		foreach ($reco_info as $reco){
 			$reco_latitude = floatval($reco->latitude);
