@@ -18,7 +18,13 @@ class MobileController extends \BaseController {
 		} catch (Exception $e){
 			return Response::json(['status'=>'failed','errors'=>json(['database'=>'failed to create user'])]);
 		}
+
+		$user_id = DB::table('users')->where('email',Input::get('email'))->pluck('id');
+		DB::table('meal_scores')->insert(array('user_id' => $user_id));
+
+		// Get token 
 		$token = Hash::make(Input::get('email').time());
+		DB::insert('insert into mobiletokens (user_id, token) values (?, ?)', array($user_id, $token));
 
 		return Response::json(['status'=>'success','token'=>$token]);
 	}
@@ -67,12 +73,13 @@ class MobileController extends \BaseController {
 	public function getstatus(){
 
 		// Get corresponding User ID for token
-		//$user_id = DB::table('mobiletokens')->where('token', Input::get('token'))->pluck('user_id');
-		$user_id = 7;
+		$user_id = DB::table('mobiletokens')->where('token', Input::get('token'))->pluck('user_id');
+		//$user_id = 50;
 
 		// Get meal name of most recently uploaded photo
-		//$mealname = DB::table('photos')->where('user_id','=',$user_id)->orderBy('created_at','desc')->pluck('description');
-		$mealname = 'fried chicken';
+		$mealname = DB::table('photos')->where('user_id','=',$user_id)->orderBy('created_at','desc')->pluck('description');
+		//$mealname = 'fried chicken';
+
 		// Get data from Nutritionix API
 		$result = $this->query_api($mealname);
 
@@ -96,9 +103,9 @@ class MobileController extends \BaseController {
 		// Get score based on calories, cholesterol, fat, and serving size
 		$score = $this->calculate_score($calories,$cholesterol,$fat,$serving_size);
 
-		$this->update_score_table($score);
+		$status = $this->update_score_table($score,$user_id);
 
-		return Response::json(['status' => 'success', 'score' => $score]);
+		return Response::json(['status' => 'success', 'userstatus' => $status]);
 	}
 
 	/*
@@ -160,10 +167,10 @@ class MobileController extends \BaseController {
 	/*
 
 	*/
-	public function update_score_table () {
-		$score = 1.0;
+	public function update_score_table ($score,$user_id) {
+		
 		if ($score > 0) {
-			$scores = DB::table('meal_scores')->select('meal_1','meal_2','meal_3','meal_4','meal_5')->where('user_id',50)->get();
+			$scores = DB::table('meal_scores')->select('meal_1','meal_2','meal_3','meal_4','meal_5')->where('user_id',$user_id)->get();
 			$scores = array_values($scores);
 			$mealscores = array($scores[0]->meal_1,$scores[0]->meal_2,$scores[0]->meal_3,$scores[0]->meal_4,$scores[0]->meal_5);
 			$count = 0;
@@ -178,15 +185,17 @@ class MobileController extends \BaseController {
 			$status = $sum/($count + 1);
 			$status = round($status);
 
+			// Update database table with new meal score value
 			$mealscores = array_values($mealscores);
 			DB::table('meal_scores')
-            ->where('user_id', 50)
+            ->where('user_id', $user_id)
             ->update(array('meal_1' => $score,'meal_2' => $mealscores[0],'meal_3' => $mealscores[1],'meal_4' => $mealscores[2],'meal_5' => $mealscores[3]));
-		} else {
+		} 
+		else {
 			$status = DB::table('meal_scores')->where('user_id',$user_id)->pluck('current_status');
 		}
 		
-		return Response::json(['status' => 'success', 'userstatus' => $status]);
+		return $status;
 	}
 
 }
