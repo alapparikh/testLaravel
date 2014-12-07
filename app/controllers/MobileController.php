@@ -159,7 +159,9 @@ class MobileController extends \BaseController {
 
 	public function update_score_table () {
 		$scores = DB::table('meal_scores')->select('meal_1','meal_2','meal_3','meal_4','meal_5')->where('user_id',50)->get();
-		return Response::json(['status' => 'success', 'scores' => $scores]);
+		$scores = array_values($scores);
+		$meal_1 = $scores[0]->meal_1;
+		return Response::json(['status' => 'success', 'scores' => $meal_1]);
 	}
 
 }
