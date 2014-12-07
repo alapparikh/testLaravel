@@ -39,7 +39,6 @@ class PhotosController extends \BaseController {
 			))) {
 
 			$plainUrl = $s3->getObjectUrl($bucket, $key);
-			//return Response::json(['status' => 'Photo successfully uploaded']);
 		} else {
 			return Response::json(['status' => 'Failed to upload photo. Please try again.']);
 		}
@@ -49,7 +48,7 @@ class PhotosController extends \BaseController {
 		try{
 			Photo::create([
 			'key' => $key,
-			'user_id' => $user_id, //Implement this after implementing tokens,
+			'user_id' => $user_id, 
 			'description' => 'testingagain',
 			'link' => $plainUrl
 			]);

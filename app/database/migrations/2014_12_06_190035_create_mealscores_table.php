@@ -16,11 +16,11 @@ class CreateMealscoresTable extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('user_id');
-			$table->float('meal_1')->default(0.0);
-			$table->float('meal_2')->default(0.0);
-			$table->float('meal_3')->default(0.0);
-			$table->float('meal_4')->default(0.0);
-			$table->float('meal_5')->default(0.0);
+			$table->float('meal_1')->default(-1.0);
+			$table->float('meal_2')->default(-1.0);
+			$table->float('meal_3')->default(-1.0);
+			$table->float('meal_4')->default(-1.0);
+			$table->float('meal_5')->default(-1.0);
 			$table->integer('current_status');
 			$table->timestamps();
 		});

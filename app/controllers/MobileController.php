@@ -78,10 +78,9 @@ class MobileController extends \BaseController {
 
 		// Get the result and parse to JSON
 		$result_arr = json_decode($result);
-		
-		$items = $result_arr->hits;
 
 		// Get calories, cholesterol, fat, and serving size from Nutritionix API response
+		$items = $result_arr->hits;
 		foreach ($items as $item) {
 			$calories = $item->fields->nf_calories;
 			$cholesterol = $item->fields->nf_cholesterol;
@@ -96,6 +95,8 @@ class MobileController extends \BaseController {
 
 		// Get score based on calories, cholesterol, fat, and serving size
 		$score = $this->calculate_score($calories,$cholesterol,$fat,$serving_size);
+
+		$this->update_score_table($score);
 
 		return Response::json(['status' => 'success', 'score' => $score]);
 	}
@@ -115,7 +116,6 @@ class MobileController extends \BaseController {
 		$scaled_cholesterol = 0.5 + ($cholesterol*3);
 
 		$score = 0.2*$scaled_calories + 0.4*$scaled_fat + 0.4*$scaled_cholesterol; 
-		$score = round($score);
 
 		return $score;
 	}
@@ -125,9 +125,7 @@ class MobileController extends \BaseController {
 	*/
 	public function query_api ($mealname){
 		// set HTTP header
-		$headers = array(
-		    'Content-Type: application/json',
-		);
+		$headers = array('Content-Type: application/json');
 
 		// query string
 		$fields = array(
@@ -137,10 +135,9 @@ class MobileController extends \BaseController {
 		    'appKey' => '7506bb427b7a5c989c48d64d68c27421',
 		);
 
+		// Build URL
 		$mealname = rawurlencode($mealname);
-
 		$url = 'https://api.nutritionix.com/v1_1/search/' . $mealname . '?' . http_build_query($fields);
-		//$url = 'https://api.nutritionix.com/v1_1/search/taco?results=0%3A2&fields=nf_calories%2Cnf_sugars&appId=65a327b9&appKey=7506bb427b7a5c989c48d64d68c27421'
 
 		// Open connection
 		$ch = curl_init();
@@ -148,7 +145,6 @@ class MobileController extends \BaseController {
 		// Set the url, number of GET vars, GET data
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_POST, false);
-		//curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true );
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
@@ -159,6 +155,11 @@ class MobileController extends \BaseController {
 		curl_close($ch);
 
 		return $result;
+	}
+
+	public function update_score_table () {
+		$scores = DB::table('meal_scores')->select('meal_1','meal_2','meal_3','meal_4','meal_5')->where('user_id',$user_id)->get();
+		return Response::json(['status' => 'success', 'scores' => $scores]);
 	}
 
 }
