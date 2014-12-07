@@ -105,7 +105,11 @@ class MobileController extends \BaseController {
 		// Get score based on calories, cholesterol, fat, and serving size
 		$score = $this->calculate_score($calories,$cholesterol,$fat,$serving_size);
 
+		// Update meal_scores_table with new score and status
 		$status = $this->update_score_table($score,$user_id);
+
+		// Update photos table with meal score
+		$this->update_photos_table($score,$user_id);
 
 		return Response::json(['status' => 'success', 'userstatus' => $status]);
 	}
@@ -204,6 +208,15 @@ class MobileController extends \BaseController {
 		
 		$status = round($status);
 		return $status;
+	}
+
+	/*
+	Inserts calculated score for most recent meal photo
+	*/
+	public function update_photos_table ($score, $user_id) {
+
+		$link = DB::table('photos')->where('user_id',$user_id)->orderBy('created_at','desc')->pluck('link');
+		DB::table('photos')->where('link',$link)->update(array('meal_score' => $score));
 	}
 
 }

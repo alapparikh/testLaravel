@@ -155,8 +155,9 @@ class UsersController extends \BaseController {
 		$user_photo_longitude = $user_photo_info[0]->longitude;
 		//return Response::json(['status' => 'success', 'recoinfo' => $user_photo_longitude]);
 
-		// 	
+		// 
 		$reco_info = DB::table('photos')->select('link','description','latitude','longitude')->whereNotIn('user_id',array($user_id))/*->where('meal_score','<',$current_status - 0.1)*/->get();
+		return Response::json(['status' => 'success', 'recoinfo' => $recommendations]);
 		$reco_info = json_decode((string)$reco_info);
 		$reco_info = shuffle($reco_info);
 		foreach ($reco_info as $reco){
@@ -174,6 +175,9 @@ class UsersController extends \BaseController {
 		return Response::json(['status' => 'success', 'recoinfo' => $recommendations]);
 	}
 
+	/*
+	Returns distance in miles between 2 points given their latitude and longitude
+	*/
 	function distance($lat1, $lon1, $lat2, $lon2) {
 
 		$theta = $lon1 - $lon2;
