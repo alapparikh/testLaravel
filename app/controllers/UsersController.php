@@ -152,7 +152,7 @@ class UsersController extends \BaseController {
 		//$current_status = DB::table('meal_scores')->where('user_id', $user_id->pluck('current_status');
 
 		// TODO: check if latitude and longitude are actually called latitude and longitude in the table	
-		$reco_info = DB::table('photos')->select('link','description','latitude','longitude')->whereNotIn('user_id',$user_id)->/*where('meal_score','<',$current_status - 0.1)*/->get();
+		$reco_info = DB::table('photos')->select('link','description','latitude','longitude')->whereNotIn('user_id',$user_id)/*->where('meal_score','<',$current_status - 0.1)*/->get();
 		return $reco_info;
 		$numbers = shuffle($numbers);
 	}
