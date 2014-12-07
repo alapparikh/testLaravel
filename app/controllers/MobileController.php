@@ -72,13 +72,13 @@ class MobileController extends \BaseController {
 
 		// Get meal name of most recently uploaded photo
 		//$mealname = DB::table('photos')->where('user_id','=',$user_id)->orderBy('created_at','desc')->pluck('description');
-		$mealname = 'salad';
+		$mealname = 'fried chicken';
 		// Get data from Nutritionix API
 		$result = $this->query_api($mealname);
 
 		// Get the result and parse to JSON
 		$result_arr = json_decode($result);
-		return Response::json(['status' => 'success', 'links' => $result_arr]);
+		
 		$items = $result_arr->hits;
 
 		// Get calories, cholesterol, fat, and serving size from Nutritionix API response
@@ -136,6 +136,9 @@ class MobileController extends \BaseController {
 		    'appId' => '65a327b9',
 		    'appKey' => '7506bb427b7a5c989c48d64d68c27421',
 		);
+
+		$mealname = rawurlencode($mealname);
+
 		$url = 'https://api.nutritionix.com/v1_1/search/' . $mealname . '?' . http_build_query($fields);
 		//$url = 'https://api.nutritionix.com/v1_1/search/taco?results=0%3A2&fields=nf_calories%2Cnf_sugars&appId=65a327b9&appKey=7506bb427b7a5c989c48d64d68c27421'
 
