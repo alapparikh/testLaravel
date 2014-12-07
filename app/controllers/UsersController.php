@@ -160,9 +160,11 @@ class UsersController extends \BaseController {
 		
 		//$reco_info_arr = json_decode($reco_info);
 		//$reco_info_arr = shuffle($reco_info_arr);
+		$recommendations[];
 		foreach ($reco_info as $reco){
 			$reco_latitude = floatval($reco->latitude);
 			$reco_longitude = floatval($reco->longitude);
+
 
 			// Check if distance between user's photo and recommendation is less than 100 miles
 			if ($this->distance($user_photo_latitude,$user_photo_longitude,$reco_latitude,$reco_longitude) < 100) {
