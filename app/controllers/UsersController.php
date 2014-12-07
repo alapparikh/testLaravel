@@ -158,9 +158,9 @@ class UsersController extends \BaseController {
 		// 
 		$reco_info = DB::table('photos')->select('link','description','latitude','longitude')->whereNotIn('user_id',array($user_id))/*->whereBetween('meal_score',array(0.1,$current_status - 0.1))*/->get();
 		
-		$reco_info_arr = json_decode($reco_info);
-		$reco_info_arr = shuffle($reco_info_arr);
-		foreach ($reco_info_arr as $reco){
+		//$reco_info_arr = json_decode($reco_info);
+		//$reco_info_arr = shuffle($reco_info_arr);
+		foreach ($reco_info as $reco){
 			$reco_latitude = floatval($reco->latitude);
 			$reco_longitude = floatval($reco->longitude);
 
