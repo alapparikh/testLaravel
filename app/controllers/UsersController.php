@@ -150,9 +150,16 @@ class UsersController extends \BaseController {
 		$user_id = 50;
 
 		//$current_status = DB::table('meal_scores')->where('user_id', $user_id->pluck('current_status');
-
+		$user_photo_info = DB::table('photos')->where('user_id',$user_id)->orderBy('created_at','desc')->pluck('link','description','latitude','longitude');
+		return Response::json(['status' => 'success', 'recoinfo' => $user_photo_info]);
+		
 		// TODO: check if latitude and longitude are actually called latitude and longitude in the table	
 		$reco_info = DB::table('photos')->select('link','description','latitude','longitude')->whereNotIn('user_id',array($user_id))/*->where('meal_score','<',$current_status - 0.1)*/->get();
+		$reco_info = shuffle($reco_info);
+		foreach ($reco_info as $reco){
+			$reco_latitude = $reco->latitude;
+			$reco_longitude = $reco->longitude;
+		}
 		return Response::json(['status' => 'success', 'recoinfo' => $reco_info]);
 		//$numbers = shuffle($numbers);
 	}
