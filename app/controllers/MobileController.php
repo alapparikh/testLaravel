@@ -76,12 +76,12 @@ class MobileController extends \BaseController {
 	public function getstatus(){
 
 		// Get corresponding User ID for token
-		//$user_id = DB::table('mobiletokens')->where('token', Input::get('token'))->pluck('user_id');
-		$user_id = 15;
+		$user_id = DB::table('mobiletokens')->where('token', Input::get('token'))->pluck('user_id');
+		//$user_id = 15;
 
 		// Get meal name of most recently uploaded photo
-		//$mealname = DB::table('photos')->where('user_id','=',$user_id)->orderBy('created_at','desc')->pluck('description');
-		$mealname = 'cheese pizza';
+		$mealname = DB::table('photos')->where('user_id','=',$user_id)->orderBy('created_at','desc')->pluck('description');
+		//$mealname = 'cheese pizza';
 
 		// Get data from Nutritionix API
 		$result = $this->query_api($mealname);
@@ -112,7 +112,7 @@ class MobileController extends \BaseController {
 		$status = $this->update_score_table($score,$user_id);
 
 		// Update photos table with meal score
-		//$this->update_photos_table($score,$user_id);
+		$this->update_photos_table($score,$user_id);
 
 		return Response::json(['status' => $function_status, 'userstatus' => $status]);
 	}
