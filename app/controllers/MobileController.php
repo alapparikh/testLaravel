@@ -131,7 +131,7 @@ class MobileController extends \BaseController {
 		$scaled_fat = 0.5 + (($fat - 0.003)*3)/0.177;
 		$scaled_cholesterol = 0.5 + ($cholesterol*3);
 
-		$score = 0.2*$scaled_calories + 0.4*$scaled_fat + 0.4*$scaled_cholesterol; 
+		$score = 0.4*$scaled_calories + 0.4*$scaled_fat + 0.2*$scaled_cholesterol; 
 
 		return $score;
 	}

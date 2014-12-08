@@ -151,22 +151,22 @@ class UsersController extends \BaseController {
 	public function recommendations () {
 		
 		// Get corresponding User ID for token
-		//$user_id = DB::table('mobiletokens')->where('token', Input::get('token'))->pluck('user_id');
-		$user_id = 3;
+		$user_id = DB::table('mobiletokens')->where('token', Input::get('token'))->pluck('user_id');
+		//$user_id = 3;
 
-		//$current_status = DB::table('meal_scores')->where('user_id', $user_id->pluck('current_status');
+		try {
+		$current_status = DB::table('meal_scores')->where('user_id', $user_id->pluck('current_status');
 		$user_photo_info = DB::table('photos')->select('link','description','latitude','longitude')->where('user_id',$user_id)->orderBy('created_at','desc')->limit(1)->get();
 		$user_photo_latitude = $user_photo_info[0]->latitude;
 		$user_photo_longitude = $user_photo_info[0]->longitude;
 		//return Response::json(['status' => 'success', 'recoinfo' => $user_photo_longitude]);
 
-		try {
 			// Get recommendations which are healthier and not eaten by the user before
 			$reco_info = DB::table('photos')
 			->select('link','description','latitude','longitude')
 			->whereNotIn('user_id',array($user_id))
 			->whereNotIn('description',array($user_photo_info[0]->description))
-			/*->whereBetween('meal_score',array(0.1,$current_status - 0.1))*/
+			->whereBetween('meal_score',array(0.1,$current_status - 0.1))
 			->get();
 		} catch (Exception $e) {
 			return Response::json(['status' => 'failed']);
