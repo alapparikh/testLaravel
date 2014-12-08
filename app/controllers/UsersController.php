@@ -155,11 +155,10 @@ class UsersController extends \BaseController {
 		//$user_id = 3;
 
 		try {
-		$current_status = DB::table('meal_scores')->where('user_id', $user_id)->pluck('current_status');
-		$user_photo_info = DB::table('photos')->select('link','description','latitude','longitude')->where('user_id',$user_id)->orderBy('created_at','desc')->limit(1)->get();
-		$user_photo_latitude = $user_photo_info[0]->latitude;
-		$user_photo_longitude = $user_photo_info[0]->longitude;
-		//return Response::json(['status' => 'success', 'recoinfo' => $user_photo_longitude]);
+			$current_status = DB::table('meal_scores')->where('user_id', $user_id)->pluck('current_status');
+			$user_photo_info = DB::table('photos')->select('link','description','latitude','longitude')->where('user_id',$user_id)->orderBy('created_at','desc')->limit(1)->get();
+			$user_photo_latitude = $user_photo_info[0]->latitude;
+			$user_photo_longitude = $user_photo_info[0]->longitude;
 
 			// Get recommendations which are healthier and not eaten by the user before
 			$reco_info = DB::table('photos')

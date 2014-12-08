@@ -78,6 +78,9 @@ class MobileController extends \BaseController {
 		// Get corresponding User ID for token
 		$user_id = DB::table('mobiletokens')->where('token', Input::get('token'))->pluck('user_id');
 		//$user_id = 15;
+		if ($user_id == null) {
+			return Response::json(['status' => 'failed']);
+		}
 
 		// Get meal name of most recently uploaded photo
 		$mealname = DB::table('photos')->where('user_id','=',$user_id)->orderBy('created_at','desc')->pluck('description');
