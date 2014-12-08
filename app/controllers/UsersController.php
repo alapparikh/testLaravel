@@ -144,7 +144,12 @@ class UsersController extends \BaseController {
 		//
 	}
 
+	/*
+	Returns certain number of recommendations (JSON) based on user's current status and within 
+	100 miles of last known location and sourced from all other users' meal photos. 
+	*/
 	public function recommendations () {
+		
 		// Get corresponding User ID for token
 		//$user_id = DB::table('mobiletokens')->where('token', Input::get('token'))->pluck('user_id');
 		$user_id = 3;
@@ -155,13 +160,17 @@ class UsersController extends \BaseController {
 		$user_photo_longitude = $user_photo_info[0]->longitude;
 		//return Response::json(['status' => 'success', 'recoinfo' => $user_photo_longitude]);
 
-		// Get recommendations which are healthier and not eaten by the user before
-		$reco_info = DB::table('photos')
-		->select('link','description','latitude','longitude')
-		->whereNotIn('user_id',array($user_id))
-		->whereNotIn('description',array($user_photo_info[0]->description))
-		/*->whereBetween('meal_score',array(0.1,$current_status - 0.1))*/
-		->get();
+		try {
+			// Get recommendations which are healthier and not eaten by the user before
+			$reco_info = DB::table('photos')
+			->select('link','description','latitude','longitude')
+			->whereNotIn('user_id',array($user_id))
+			->whereNotIn('description',array($user_photo_info[0]->description))
+			/*->whereBetween('meal_score',array(0.1,$current_status - 0.1))*/
+			->get();
+		} catch (Exception $e) {
+			return Response::json(['status' => 'failed']);
+		}
 		
 		//$reco_info_arr = json_decode($reco_info);
 		shuffle($reco_info);
@@ -171,9 +180,10 @@ class UsersController extends \BaseController {
 			$reco_latitude = floatval($reco->latitude);
 			$reco_longitude = floatval($reco->longitude);
 			
-			// Check if distance between user's photo and recommendation is less than 100 miles
+			// Check if distance between user's photo and recommendation is less than 100 miles 
+			// and get max of 10 recommendations
 			if ($this->distance($user_photo_latitude,$user_photo_longitude,$reco_latitude,$reco_longitude) < 100) {
-				//$recommendations[] = $reco;
+				
 				array_push($recommendations,$reco);
 				if (sizeof($recommendations) == 10) {
 					break;

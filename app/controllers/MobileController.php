@@ -33,7 +33,7 @@ class MobileController extends \BaseController {
 
 		if (Auth::attempt(['email'=>Input::get('email'),'password'=>Input::get('password')] ))
 		{
-			// Generate token and set it in alternate database. Don't use Eloquent
+			// Generate token and set it in alternate database
 			$token = Hash::make(Input::get('email').time());
 			DB::delete('delete from mobiletokens where user_id = ?', array(Auth::id()));
 			DB::insert('insert into mobiletokens (user_id, token) values (?, ?)', array(Auth::id(), $token));
@@ -70,15 +70,18 @@ class MobileController extends \BaseController {
 		return Response::json(['status' => 'success', 'links' => $links]);
 	}
 
+	/*
+	Returns new status for user based on latest meal photo
+	*/
 	public function getstatus(){
 
 		// Get corresponding User ID for token
-		$user_id = DB::table('mobiletokens')->where('token', Input::get('token'))->pluck('user_id');
-		//$user_id = 50;
+		//$user_id = DB::table('mobiletokens')->where('token', Input::get('token'))->pluck('user_id');
+		$user_id = 16;
 
 		// Get meal name of most recently uploaded photo
-		$mealname = DB::table('photos')->where('user_id','=',$user_id)->orderBy('created_at','desc')->pluck('description');
-		//$mealname = 'fried chicken';
+		//$mealname = DB::table('photos')->where('user_id','=',$user_id)->orderBy('created_at','desc')->pluck('description');
+		$mealname = 'cheese pizza';
 
 		// Get data from Nutritionix API
 		$result = $this->query_api($mealname);
@@ -96,22 +99,22 @@ class MobileController extends \BaseController {
 		}
 
 		// Insufficient data to calculate meal score
-		if ($serving_size == null) {
+		if ($serving_size == null) { 
 			$score = 0.0;
-			$status = $this->update_score_table($score,$user_id);
-			return Response::json(['status' => 'failed', 'userstatus' => $status]);
+			$function_status = 'failed';
+		} else {
+			// Get score based on calories, cholesterol, fat, and serving size
+			$score = $this->calculate_score($calories,$cholesterol,$fat,$serving_size);
+			$function_status = 'success';
 		}
 
-		// Get score based on calories, cholesterol, fat, and serving size
-		$score = $this->calculate_score($calories,$cholesterol,$fat,$serving_size);
-
 		// Update meal_scores_table with new score and status
-		$status = $this->update_score_table($score,$user_id);
+		//$status = $this->update_score_table($score,$user_id);
 
 		// Update photos table with meal score
-		$this->update_photos_table($score,$user_id);
+		//$this->update_photos_table($score,$user_id);
 
-		return Response::json(['status' => 'success', 'userstatus' => $status]);
+		return Response::json(['status' => $function_status, 'userstatus' => $status]);
 	}
 
 	/*
@@ -171,7 +174,10 @@ class MobileController extends \BaseController {
 	}
 
 	/*
+	Updates meal_scores table to reflect the scores for the most recent 5 meals, and calculates and 
+	updates current status of user.
 
+	Returns current status.
 	*/
 	public function update_score_table ($score,$user_id) {
 		
